@@ -1,0 +1,28 @@
+# VS Code and SFTP credentials
+.vscode/
+sftp.json
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build files
+dist/
+build/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+*.sublime-project
+*.sublime-workspace
