@@ -18,6 +18,35 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Declare compatibility with WooCommerce features.
+ */
+add_action(
+    'before_woocommerce_init',
+    static function () {
+
+        if (
+            ! class_exists(
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::class
+            )
+        ) {
+            return;
+        }
+
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            'custom_order_tables',
+            __FILE__,
+            true
+        );
+
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            'cart_checkout_blocks',
+            __FILE__,
+            true
+        );
+    }
+);
+
 define( 'WCS_VERSION', '0.1.0' );
 define( 'WCS_PLUGIN_FILE', __FILE__ );
 define( 'WCS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -59,4 +88,4 @@ function wcs_run_plugin() {
 	WCS_Plugin::instance()->run();
 }
 
-add_action( 'plugins_loaded', 'wcs_run_plugin' );
+add_action( 'plugins_loaded', 'wcs_run_plugin' ); 
