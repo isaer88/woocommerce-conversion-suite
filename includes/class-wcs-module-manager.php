@@ -13,12 +13,15 @@ final class WCS_Module_Manager {
     const OPTION_NAME = 'wcs_enabled_modules';
 
     private $modules = array();
-
     private $initialized = false;
 
-    /**
-     * Register a module.
-     */
+    public function __construct() {
+        add_action(
+            'wp_ajax_wcs_toggle_module',
+            array( $this, 'ajax_toggle_module' )
+        );
+    }
+
     public function register_module( WCS_Module $module ) {
         $id = $module->get_id();
 
@@ -81,9 +84,11 @@ final class WCS_Module_Manager {
 
         $enabled = self::get_enabled_modules();
 
-        if ( ! in_array( $id, $enabled, true ) ) {
-            $enabled[] = $id;
+        if ( in_array( $id, $enabled, true ) ) {
+            return true;
         }
+
+        $enabled[] = $id;
 
         return update_option( self::OPTION_NAME, $enabled );
     }
@@ -91,19 +96,91 @@ final class WCS_Module_Manager {
     public static function disable_module( $id ) {
         $id = sanitize_key( $id );
 
+        $enabled = self::get_enabled_modules();
+
+        if ( ! in_array( $id, $enabled, true ) ) {
+            return true;
+        }
+
         $enabled = array_values(
-            array_diff(
-                self::get_enabled_modules(),
-                array( $id )
-            )
+            array_diff( $enabled, array( $id ) )
         );
 
         return update_option( self::OPTION_NAME, $enabled );
     }
 
-    /**
-     * Register admin hooks for every module.
-     */
+    public function ajax_toggle_module() {
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error(
+                array( 'message' => 'Permission denied.' ),
+                403
+            );
+        }
+
+        if (
+            ! check_ajax_referer(
+                'wcs_toggle_module',
+                'nonce',
+                false
+            )
+        ) {
+            wp_send_json_error(
+                array( 'message' => 'Security check failed. Reload the page.' ),
+                403
+            );
+        }
+
+        $id = isset( $_POST['module_id'] )
+            ? sanitize_key( wp_unslash( $_POST['module_id'] ) )
+            : '';
+
+        $enabled = isset( $_POST['enabled'] )
+            ? sanitize_text_field( wp_unslash( $_POST['enabled'] ) )
+            : '';
+
+        $module = $this->get_module( $id );
+
+        if ( ! $module ) {
+            wp_send_json_error(
+                array( 'message' => 'Module not found.' ),
+                404
+            );
+        }
+
+        if ( $module->is_pro() ) {
+            wp_send_json_error(
+                array( 'message' => 'This module requires Pro.' ),
+                403
+            );
+        }
+
+        if ( ! in_array( $enabled, array( '0', '1' ), true ) ) {
+            wp_send_json_error(
+                array( 'message' => 'Invalid module state.' ),
+                400
+            );
+        }
+
+        $success = '1' === $enabled
+            ? self::enable_module( $id )
+            : self::disable_module( $id );
+
+        if ( ! $success ) {
+            wp_send_json_error(
+                array( 'message' => 'Could not save module state.' ),
+                500
+            );
+        }
+
+        wp_send_json_success(
+            array(
+                'module_id' => $id,
+                'enabled'   => self::is_module_enabled( $id ),
+                'message'   => 'Module state saved.',
+            )
+        );
+    }
+
     public function initialize_admin_modules() {
         if ( ! is_admin() ) {
             return;
@@ -114,9 +191,6 @@ final class WCS_Module_Manager {
         }
     }
 
-    /**
-     * Initialize enabled frontend modules.
-     */
     public function initialize_modules() {
         if ( $this->initialized ) {
             return;
