@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Buy Now frontend.

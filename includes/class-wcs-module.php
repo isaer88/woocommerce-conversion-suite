@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Base class for Conversion Suite modules.

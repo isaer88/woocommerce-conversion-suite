@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Buy Now module bootstrap.
