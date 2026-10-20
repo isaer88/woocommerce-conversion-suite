@@ -13,7 +13,7 @@ final class WCS_Buy_Now_Module extends WCS_Module {
     protected $id = 'buy-now';
     protected $name = 'Buy Now';
     protected $description = 'Direct checkout from product pages.';
-    protected $version = '1.0.0';
+    protected $version = '1.0.1';
     protected $icon = 'dashicons-cart';
     protected $settings_page = 'wcs-buy-now';
 
