@@ -1,0 +1,114 @@
+
+.wcs-sticky-cart {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(110%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.25s ease, visibility 0.25s ease;
+}
+
+.wcs-sticky-cart.is-visible {
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.wcs-sticky-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.wcs-sticky-product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.wcs-sticky-thumbnail {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+}
+
+.wcs-sticky-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.wcs-sticky-product-info {
+    min-width: 0;
+}
+
+.wcs-sticky-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.wcs-sticky-price {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.wcs-sticky-button {
+    min-width: 160px;
+    padding: 12px 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.wcs-sticky-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .wcs-sticky-inner {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .wcs-sticky-thumbnail {
+        width: 44px;
+        height: 44px;
+    }
+
+    .wcs-sticky-title {
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .wcs-sticky-price {
+        font-size: 13px;
+    }
+
+    .wcs-sticky-button {
+        min-width: 115px;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wcs-sticky-cart {
+        transition: none;
+    }
+}
