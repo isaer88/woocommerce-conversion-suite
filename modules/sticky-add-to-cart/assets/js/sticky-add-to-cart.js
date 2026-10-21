@@ -84,8 +84,10 @@
 
             button.disabled = !ready;
 
+            const customText = button.dataset.buttonText || 'Add to cart';
+
             button.textContent = ready
-                ? 'Add to cart'
+                ? customText
                 : (
                     productType === 'variable'
                         ? 'Choose options'

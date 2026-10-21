@@ -53,6 +53,24 @@ final class WCS_Sticky_Add_To_Cart {
         $js_file  = __DIR__ . '/assets/js/sticky-add-to-cart.js';
 
         wp_enqueue_style(
+            $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
+
+            $background = sanitize_hex_color( $settings['background'] ) ?: '#ffffff';
+            $button_color = sanitize_hex_color( $settings['button_color'] ) ?: '#2271b1';
+
+            $custom_css = sprintf(
+                '#wcs-sticky-cart { background: %1$s; }'
+                . '#wcs-sticky-cart .wcs-sticky-button { background: %2$s; border-color: %2$s; color: #ffffff; }',
+                $background,
+                $button_color
+            );
+
+            if ( 'no' === $settings['show_mobile'] ) {
+                $custom_css .= '@media (max-width: 600px) { #wcs-sticky-cart { display: none !important; } }';
+            }
+
+            wp_add_inline_style( 'wcs-sticky-add-to-cart', $custom_css );
+
             'wcs-sticky-add-to-cart',
             $base . 'css/sticky-add-to-cart.css',
             array(),
@@ -71,6 +89,12 @@ final class WCS_Sticky_Add_To_Cart {
     public function render_bar() {
         $product = $this->get_product();
 
+        $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
+
+        $position_class = 'top' === $settings['position']
+            ? 'wcs-sticky-cart--top'
+            : 'wcs-sticky-cart--bottom';
+
         if ( ! $product ) {
             return;
         }
@@ -83,16 +107,18 @@ final class WCS_Sticky_Add_To_Cart {
         ?>
         <div
             id="wcs-sticky-cart"
-            class="wcs-sticky-cart"
+            class="wcs-sticky-cart <?php echo esc_attr( $position_class ); ?>"
             data-product-type="<?php echo esc_attr( $product->get_type() ); ?>"
             aria-hidden="true"
         >
             <div class="wcs-sticky-inner">
 
                 <div class="wcs-sticky-product">
-                    <div class="wcs-sticky-thumbnail">
-                        <?php echo wp_kses_post( $image ); ?>
-                    </div>
+                    <?php if ( 'yes' === $settings['show_image'] ) : ?>
+                        <div class="wcs-sticky-thumbnail">
+                            <?php echo wp_kses_post( $image ); ?>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="wcs-sticky-product-info">
                         <div class="wcs-sticky-title">
@@ -111,6 +137,7 @@ final class WCS_Sticky_Add_To_Cart {
                 <button
                     type="button"
                     class="button alt wcs-sticky-button"
+                    data-button-text="<?php echo esc_attr( $settings['button_text'] ); ?>"
                     disabled
                 >
                     <?php
