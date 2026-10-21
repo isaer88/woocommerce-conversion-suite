@@ -52,36 +52,50 @@ final class WCS_Sticky_Add_To_Cart {
         $css_file = __DIR__ . '/assets/css/sticky-add-to-cart.css';
         $js_file  = __DIR__ . '/assets/js/sticky-add-to-cart.js';
 
+        // 1. Load CSS.
         wp_enqueue_style(
-            $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
-
-            $background = sanitize_hex_color( $settings['background'] ) ?: '#ffffff';
-            $button_color = sanitize_hex_color( $settings['button_color'] ) ?: '#2271b1';
-
-            $custom_css = sprintf(
-                '#wcs-sticky-cart { background: %1$s; }'
-                . '#wcs-sticky-cart .wcs-sticky-button { background: %2$s; border-color: %2$s; color: #ffffff; }',
-                $background,
-                $button_color
-            );
-
-            if ( 'no' === $settings['show_mobile'] ) {
-                $custom_css .= '@media (max-width: 600px) { #wcs-sticky-cart { display: none !important; } }';
-            }
-
-            wp_add_inline_style( 'wcs-sticky-add-to-cart', $custom_css );
-
             'wcs-sticky-add-to-cart',
             $base . 'css/sticky-add-to-cart.css',
             array(),
-            file_exists( $css_file ) ? filemtime( $css_file ) : '1.0.0'
+            file_exists( $css_file ) ? filemtime( $css_file ) : '1.1.0'
         );
 
+        // 2. Load module settings.
+        $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
+
+        $background = sanitize_hex_color(
+            $settings['background']
+        ) ?: '#ffffff';
+
+        $button_color = sanitize_hex_color(
+            $settings['button_color']
+        ) ?: '#2271b1';
+
+        // 3. Generate custom CSS.
+        $custom_css = sprintf(
+            '#wcs-sticky-cart { background: %1$s; }'
+            . '#wcs-sticky-cart .wcs-sticky-button { background: %2$s; border-color: %2$s; color: #ffffff; }',
+            $background,
+            $button_color
+        );
+
+        // 4. Hide on mobile when disabled.
+        if ( 'no' === $settings['show_mobile'] ) {
+            $custom_css .= '@media (max-width: 600px) { #wcs-sticky-cart { display: none !important; } }';
+        }
+
+        // 5. Add custom CSS after the stylesheet is registered.
+        wp_add_inline_style(
+            'wcs-sticky-add-to-cart',
+            $custom_css
+        );
+
+        // 6. Load JavaScript.
         wp_enqueue_script(
             'wcs-sticky-add-to-cart',
             $base . 'js/sticky-add-to-cart.js',
             array(),
-            file_exists( $js_file ) ? filemtime( $js_file ) : '1.0.0',
+            file_exists( $js_file ) ? filemtime( $js_file ) : '1.1.0',
             true
         );
     }
