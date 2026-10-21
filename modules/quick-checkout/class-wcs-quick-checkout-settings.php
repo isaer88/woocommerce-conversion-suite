@@ -39,7 +39,7 @@ final class WCS_Quick_Checkout_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce',
+            'woocommerce-conversion-suite',
             'Quick Checkout Settings',
             'Quick Checkout',
             'manage_woocommerce',

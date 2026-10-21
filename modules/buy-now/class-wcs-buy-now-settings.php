@@ -44,7 +44,7 @@ final class WCS_Buy_Now_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce',
+            'woocommerce-conversion-suite',
             'Buy Now Settings',
             'Buy Now',
             'manage_woocommerce',

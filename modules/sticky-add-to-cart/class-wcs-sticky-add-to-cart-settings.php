@@ -39,7 +39,7 @@ final class WCS_Sticky_Add_To_Cart_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce',
+            'woocommerce-conversion-suite',
             'Sticky Add to Cart Settings',
             'Sticky Add to Cart',
             'manage_woocommerce',

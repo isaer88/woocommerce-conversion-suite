@@ -9,27 +9,47 @@ defined( 'ABSPATH' ) || exit;
 
 class WCS_Admin {
 
+    const MENU_SLUG = 'woocommerce-conversion-suite';
+
     public function register_menu() {
-        add_submenu_page(
-            'woocommerce',
-            'Conversion Suite',
+        add_menu_page(
+            'WooCommerce Conversion Suite',
             'Conversion Suite',
             'manage_woocommerce',
-            'woocommerce-conversion-suite',
+            self::MENU_SLUG,
+            array( $this, 'render_settings_page' ),
+            'dashicons-cart',
+            56
+        );
+
+        add_submenu_page(
+            self::MENU_SLUG,
+            'Dashboard',
+            'Dashboard',
+            'manage_woocommerce',
+            self::MENU_SLUG,
             array( $this, 'render_settings_page' )
         );
     }
 
     public function render_settings_page() {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_die( esc_html__( 'Permission denied.', 'woocommerce-conversion-suite' ) );
+            wp_die(
+                esc_html__(
+                    'Permission denied.',
+                    'woocommerce-conversion-suite'
+                )
+            );
         }
 
         require WCS_PLUGIN_PATH . 'admin/views/settings-page.php';
     }
 
     public function enqueue_assets( $hook_suffix ) {
-        if ( 'woocommerce_page_woocommerce-conversion-suite' !== $hook_suffix ) {
+        if (
+            'toplevel_page_' . self::MENU_SLUG
+            !== $hook_suffix
+        ) {
             return;
         }
 
