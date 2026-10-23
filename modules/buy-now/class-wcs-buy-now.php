@@ -37,22 +37,30 @@ final class WCS_Buy_Now {
             array( $this, 'render_button' )
         );
 
-        // Runs before WooCommerce's native form handler.
         add_action(
             'wp_loaded',
             array( $this, 'prepare_buy_now' ),
             19
         );
 
-        // Runs only after WooCommerce adds an item successfully.
         add_action(
             'woocommerce_add_to_cart',
             array( $this, 'after_add_to_cart' ),
             20,
             6
         );
+
+        // Synchronize Buy Now with WooCommerce variations.
+        add_action(
+            'wp_enqueue_scripts',
+            array( $this, 'enqueue_variation_script' ),
+            20
+        );
     }
 
+    /**
+     * Render Buy Now button.
+     */
     public function render_button() {
         global $product;
 
@@ -74,10 +82,103 @@ final class WCS_Buy_Now {
             return;
         }
 
+        $disabled = $product->is_type( 'variable' )
+            ? ' disabled="disabled"'
+            : '';
+
         printf(
-            '<button type="submit" name="wcs_buy_now" value="%1$d" class="button alt wcs-buy-now-button">%2$s</button>',
+            '<button type="submit" name="wcs_buy_now" value="%1$d" class="button alt wcs-buy-now-button"%3$s>%2$s</button>',
             absint( $product->get_id() ),
-            esc_html( $this->settings['button_text'] )
+            esc_html( $this->settings['button_text'] ),
+            $disabled
+        );
+    }
+
+    /**
+     * Synchronize the Buy Now button with the native
+     * WooCommerce Add to Cart button.
+     */
+    public function enqueue_variation_script() {
+        if (
+            ! function_exists( 'is_product' )
+            || ! is_product()
+        ) {
+            return;
+        }
+
+        wp_enqueue_script( 'wc-add-to-cart-variation' );
+
+        $script = <<<'JS'
+jQuery(function($) {
+    'use strict';
+
+    $('form.variations_form').each(function() {
+        var $form = $(this);
+
+        var $buyNow = $form.find(
+            '.wcs-buy-now-button'
+        );
+
+        var $addToCart = $form.find(
+            '.single_add_to_cart_button'
+        ).not('.wcs-buy-now-button').first();
+
+        if (!$buyNow.length || !$addToCart.length) {
+            return;
+        }
+
+        function syncBuyNow() {
+            var disabled =
+                $addToCart.prop('disabled') ||
+                $addToCart.hasClass('disabled') ||
+                !$form.find(
+                    'input[name="variation_id"]'
+                ).val();
+
+            $buyNow
+                .prop('disabled', !!disabled)
+                .toggleClass('disabled', !!disabled)
+                .attr('aria-disabled', String(!!disabled));
+        }
+
+        // Disabled until WooCommerce selects
+        // a valid variation.
+        $buyNow.prop('disabled', true);
+
+        $form.on(
+            'found_variation.wcsBuyNow ' +
+            'show_variation.wcsBuyNow ' +
+            'hide_variation.wcsBuyNow ' +
+            'reset_data.wcsBuyNow ' +
+            'woocommerce_variation_has_changed.wcsBuyNow',
+            function() {
+                window.setTimeout(syncBuyNow, 0);
+            }
+        );
+
+        $form.on(
+            'change.wcsBuyNow',
+            'select[name^="attribute_"], ' +
+            'input[name^="attribute_"]',
+            function() {
+                $buyNow
+                    .prop('disabled', true)
+                    .addClass('disabled')
+                    .attr('aria-disabled', 'true');
+            }
+        );
+
+        // Handles preselected variations and
+        // WooCommerce initialization.
+        window.setTimeout(syncBuyNow, 0);
+    });
+});
+JS;
+
+        wp_add_inline_script(
+            'wc-add-to-cart-variation',
+            $script,
+            'after'
         );
     }
 
@@ -118,8 +219,7 @@ final class WCS_Buy_Now {
             return;
         }
 
-        // The native handler reads add-to-cart from $_REQUEST.
-        // For variable products the original form also supplies
+        // Native WooCommerce validation handles
         // variation_id and attribute_* values.
         $_REQUEST['add-to-cart'] = $product_id;
 
@@ -133,7 +233,7 @@ final class WCS_Buy_Now {
     }
 
     /**
-     * WooCommerce calls this hook after a successful add_to_cart().
+     * Runs after a successful WooCommerce add_to_cart().
      */
     public function after_add_to_cart(
         $cart_item_key,
@@ -143,7 +243,10 @@ final class WCS_Buy_Now {
         $variation,
         $cart_item_data
     ) {
-        if ( ! $this->buy_now_request || ! WC()->cart ) {
+        if (
+            ! $this->buy_now_request
+            || ! WC()->cart
+        ) {
             return;
         }
 
@@ -153,17 +256,17 @@ final class WCS_Buy_Now {
             return;
         }
 
-        // Preserve the successfully added cart item.
-        // Remove other items only after native validation succeeds.
+        // Keep the successfully added cart item.
         foreach ( WC()->cart->get_cart() as $key => $item ) {
             if ( $key !== $cart_item_key ) {
                 WC()->cart->remove_cart_item( $key );
             }
         }
 
-        // If the same item was already in the cart, WooCommerce
-        // may have merged quantities. Keep the requested quantity.
-        $current = WC()->cart->get_cart_item( $cart_item_key );
+        // Preserve the requested quantity.
+        $current = WC()->cart->get_cart_item(
+            $cart_item_key
+        );
 
         if ( $current ) {
             WC()->cart->set_quantity(
@@ -177,7 +280,7 @@ final class WCS_Buy_Now {
     }
 
     /**
-     * Redirect only if WooCommerce added the item successfully.
+     * Redirect only after a successful add to cart.
      */
     public function redirect_after_add( $url ) {
         if (
