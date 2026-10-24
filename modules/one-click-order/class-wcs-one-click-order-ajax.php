@@ -1,6 +1,8 @@
 <?php
 /**
  * One Click Order AJAX handler.
+ *
+ * @package WooCommerce_Conversion_Suite
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -33,58 +35,109 @@ final class WCS_One_Click_Order_Ajax {
 
     public function cleanup_request( $key ) {
         if (
-            is_string( $key )
-            && 0 === strpos( $key, 'wcs_oco_request_' )
+            ! is_string( $key )
+            || ! preg_match(
+                '/^wcs_oco_request_[a-f0-9]{64}$/',
+                $key
+            )
         ) {
+            return;
+        }
+
+        // Keep reservations linked to an existing order.
+        // Only remove abandoned "processing" reservations.
+        if ( 'processing' === get_option( $key, false ) ) {
             delete_option( $key );
         }
     }
 
+    private function get_post_string( $key, $max_length = 255 ) {
+        if (
+            ! isset( $_POST[ $key ] )
+            || ! is_string( $_POST[ $key ] )
+        ) {
+            return '';
+        }
+
+        $value = wp_unslash( $_POST[ $key ] );
+
+        if ( strlen( $value ) > $max_length ) {
+            return '';
+        }
+
+        return sanitize_text_field( $value );
+    }
+
     public function create_order() {
-        if ( ! check_ajax_referer(
-            'wcs_oco_create_order',
-            'nonce',
-            false
-        ) ) {
-            $this->error( 'Security verification failed. Refresh the page.', 403 );
+        if (
+            ! check_ajax_referer(
+                'wcs_oco_create_order',
+                'nonce',
+                false
+            )
+        ) {
+            $this->error(
+                'Security verification failed. Refresh the page.',
+                403
+            );
         }
 
         if (
             ! function_exists( 'wc_create_order' )
             || ! function_exists( 'wc_get_product' )
         ) {
-            $this->error( 'WooCommerce is unavailable.', 503 );
+            $this->error(
+                'WooCommerce is unavailable.',
+                503
+            );
         }
 
         $settings = WCS_One_Click_Order_Settings::get_settings();
 
-        if ( 'yes' !== $settings['enabled'] ) {
+        if ( 'yes' !== ( $settings['enabled'] ?? 'no' ) ) {
             $this->error( 'Quick Order is disabled.', 403 );
         }
 
-        $product_id = isset( $_POST['product_id'] )
-            ? absint( wp_unslash( $_POST['product_id'] ) )
-            : 0;
+        $fields = array(
+            'product_id',
+            'quantity',
+            'customer_name',
+            'customer_phone',
+            'request_id',
+        );
 
-        $quantity = isset( $_POST['quantity'] )
-            ? absint( wp_unslash( $_POST['quantity'] ) )
-            : 0;
+        foreach ( $fields as $field ) {
+            if (
+                ! isset( $_POST[ $field ] )
+                || ! is_string( $_POST[ $field ] )
+            ) {
+                $this->error( 'Invalid request data.', 400 );
+            }
+        }
 
-        $name = isset( $_POST['customer_name'] )
-            ? sanitize_text_field( wp_unslash( $_POST['customer_name'] ) )
-            : '';
+        $product_id = absint(
+            wp_unslash( $_POST['product_id'] )
+        );
 
-        $phone = isset( $_POST['customer_phone'] )
-            ? sanitize_text_field( wp_unslash( $_POST['customer_phone'] ) )
-            : '';
+        $quantity = absint(
+            wp_unslash( $_POST['quantity'] )
+        );
 
-        $request_id = isset( $_POST['request_id'] )
-            ? sanitize_text_field( wp_unslash( $_POST['request_id'] ) )
-            : '';
+        $name = sanitize_text_field(
+            wp_unslash( $_POST['customer_name'] )
+        );
+
+        $phone = sanitize_text_field(
+            wp_unslash( $_POST['customer_phone'] )
+        );
+
+        $request_id = sanitize_text_field(
+            wp_unslash( $_POST['request_id'] )
+        );
 
         if (
             ! preg_match(
-                '/^[a-f0-9-]{36}$/i',
+                '/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i',
                 $request_id
             )
         ) {
@@ -93,15 +146,21 @@ final class WCS_One_Click_Order_Ajax {
 
         if (
             '' === $name
-            || strlen( $name ) > 200
             || '' === $phone
-            || ! preg_match( '/^\+?[0-9\s().-]{7,25}$/', $phone )
+            || ! preg_match(
+                '/^\+?[0-9\s().-]{7,25}$/',
+                $phone
+            )
         ) {
-            $this->error( 'Enter a valid name and phone number.' );
+            $this->error(
+                'Enter a valid name and phone number.'
+            );
         }
 
         if ( $quantity < 1 || $quantity > 20 ) {
-            $this->error( 'Quantity must be between 1 and 20.' );
+            $this->error(
+                'Quantity must be between 1 and 20.'
+            );
         }
 
         $product = wc_get_product( $product_id );
@@ -116,11 +175,15 @@ final class WCS_One_Click_Order_Ajax {
             || $product->backorders_allowed()
             || ! is_numeric( $product->get_price() )
         ) {
-            $this->error( 'This product is unavailable for Quick Order.' );
+            $this->error(
+                'This product is unavailable for Quick Order.'
+            );
         }
 
-        // Taxable products need the regular checkout calculation flow.
-        if ( wc_tax_enabled() && $product->is_taxable() ) {
+        if (
+            wc_tax_enabled()
+            && $product->is_taxable()
+        ) {
             $this->error(
                 'This product requires the standard checkout.'
             );
@@ -130,22 +193,25 @@ final class WCS_One_Click_Order_Ajax {
             $product->is_sold_individually()
             && 1 !== $quantity
         ) {
-            $this->error( 'Only one unit can be ordered.' );
+            $this->error(
+                'Only one unit can be ordered.'
+            );
         }
 
         if (
             $product->managing_stock()
             && ! $product->has_enough_stock( $quantity )
         ) {
-            $this->error( 'Not enough stock available.' );
+            $this->error(
+                'Not enough stock available.'
+            );
         }
 
-        /*
-         * Limit request volume by IP fingerprint.
-         * This is an abuse mitigation measure, not authentication.
-         */
+        // Basic IP-based abuse mitigation.
         $ip = isset( $_SERVER['REMOTE_ADDR'] )
-            ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
+            ? sanitize_text_field(
+                wp_unslash( $_SERVER['REMOTE_ADDR'] )
+            )
             : 'unknown';
 
         $rate_key = 'wcs_oco_rate_' . md5( $ip );
@@ -165,30 +231,28 @@ final class WCS_One_Click_Order_Ajax {
             HOUR_IN_SECONDS
         );
 
-        /*
-         * Reserve a unique request ID.
-         * add_option() uses a unique option_name constraint.
-         */
+        // Atomic reservation through the unique option name.
         $request_key = 'wcs_oco_request_' . hash(
             'sha256',
-            $request_id
+            strtolower( $request_id )
         );
 
-        if ( ! add_option( $request_key, 'processing', '', false ) ) {
+        if (
+            ! add_option(
+                $request_key,
+                'processing',
+                '',
+                false
+            )
+        ) {
             $this->error(
                 'This order request has already been submitted.',
                 409
             );
         }
 
-        // Cleanup reservation after 24 hours.
-        wp_schedule_single_event(
-            time() + DAY_IN_SECONDS,
-            'wcs_oco_cleanup_request',
-            array( $request_key )
-        );
-
         $order = false;
+        $cleanup_confirmed = false;
 
         try {
             $order = wc_create_order(
@@ -199,11 +263,18 @@ final class WCS_One_Click_Order_Ajax {
             );
 
             if ( is_wp_error( $order ) ) {
-                throw new Exception( $order->get_error_message() );
+                throw new Exception(
+                    $order->get_error_message()
+                );
             }
 
-            if ( ! $order || ! is_a( $order, 'WC_Order' ) ) {
-                throw new Exception( 'Order creation failed.' );
+            if (
+                ! $order instanceof WC_Order
+                || ! $order->get_id()
+            ) {
+                throw new Exception(
+                    'Order creation failed.'
+                );
             }
 
             $item_id = $order->add_product(
@@ -212,7 +283,9 @@ final class WCS_One_Click_Order_Ajax {
             );
 
             if ( ! $item_id ) {
-                throw new Exception( 'Unable to add the product.' );
+                throw new Exception(
+                    'Unable to add the product.'
+                );
             }
 
             $order->set_billing_first_name( $name );
@@ -236,11 +309,7 @@ final class WCS_One_Click_Order_Ajax {
                 'one-click-order'
             );
 
-            /*
-             * Calculate product-line totals without tax.
-             * Taxable products are excluded above.
-             * Shipping is NOT calculated in this MVP.
-             */
+            // Taxes and shipping are excluded in this MVP.
             $order->calculate_totals( false );
 
             $order->set_status( 'on-hold' );
@@ -251,6 +320,13 @@ final class WCS_One_Click_Order_Ajax {
 
             $order->save();
 
+            if ( ! $order->get_id() ) {
+                throw new Exception(
+                    'Order was not saved.'
+                );
+            }
+
+            // Store the order ID for duplicate detection.
             update_option(
                 $request_key,
                 (string) $order->get_id(),
@@ -260,25 +336,44 @@ final class WCS_One_Click_Order_Ajax {
             wp_send_json_success(
                 array(
                     'order_id' => $order->get_id(),
-                    'message'  => $settings['success_text'],
+                    'message'  => $settings['success_text'] ?? 'Order request received.',
                 )
             );
+
         } catch ( Throwable $exception ) {
-            if ( $order && is_a( $order, 'WC_Order' ) ) {
+
+            if ( $order instanceof WC_Order ) {
                 try {
-                    $order->delete( true );
+                    $order_id = $order->get_id();
+
+                    if ( $order_id ) {
+                        $order->delete( true );
+
+                        // Confirm that the order no longer exists.
+                        $cleanup_confirmed = ! wc_get_order(
+                            $order_id
+                        );
+                    } else {
+                        $cleanup_confirmed = true;
+                    }
                 } catch ( Throwable $cleanup_error ) {
                     error_log(
                         'WCS OCO cleanup failed: ' .
                         $cleanup_error->getMessage()
                     );
                 }
+            } else {
+                $cleanup_confirmed = true;
             }
 
-            delete_option( $request_key );
+            // Only release the request ID when cleanup succeeded.
+            if ( $cleanup_confirmed ) {
+                delete_option( $request_key );
+            }
 
             error_log(
-                'WCS OCO error: ' . $exception->getMessage()
+                'WCS OCO error: ' .
+                $exception->getMessage()
             );
 
             $this->error(
