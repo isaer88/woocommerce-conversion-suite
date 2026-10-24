@@ -44,10 +44,13 @@ final class WCS_One_Click_Order_Ajax {
             return;
         }
 
-        // Keep reservations linked to an existing order.
-        // Only remove abandoned "processing" reservations.
+        // Do not automatically delete reservations.
+        // A processing reservation may belong to an order
+        // whose ID could not be persisted.
         if ( 'processing' === get_option( $key, false ) ) {
-            delete_option( $key );
+            error_log(
+                'WCS OCO: Reservation requires manual review: ' . $key
+            );
         }
     }
 
@@ -251,6 +254,20 @@ final class WCS_One_Click_Order_Ajax {
             );
         }
 
+        // Cleanup abandoned processing reservations after 24 hours.
+        $scheduled = wp_schedule_single_event(
+            time() + DAY_IN_SECONDS,
+            'wcs_oco_cleanup_request',
+            array( $request_key ),
+            true
+        );
+
+        if ( is_wp_error( $scheduled ) || ! $scheduled ) {
+            error_log(
+                'WCS OCO: Failed to schedule request cleanup.'
+            );
+        }
+
         $order = false;
         $cleanup_confirmed = false;
 
@@ -327,11 +344,22 @@ final class WCS_One_Click_Order_Ajax {
             }
 
             // Store the order ID for duplicate detection.
-            update_option(
+            $order_id = (string) $order->get_id();
+
+            $updated = update_option(
                 $request_key,
-                (string) $order->get_id(),
+                $order_id,
                 false
             );
+
+            if (
+                ! $updated
+                && $order_id !== (string) get_option( $request_key, '' )
+            ) {
+                throw new RuntimeException(
+                    'Unable to persist the order request reservation.'
+                );
+            }
 
             wp_send_json_success(
                 array(
