@@ -1,17 +1,16 @@
 <?php
 /**
  * Plugin Name: WooCommerce Conversion Suite
- * Plugin URI: https://example.com/woocommerce-conversion-suite
+ * Plugin URI: https://github.com/isaer88/woocommerce-conversion-suite
  * Description: Набір інструментів для підвищення конверсії та продажів у WooCommerce.
  * Version: 0.1.0
  * Author: Oleksandr Yeremenko
- * Author URI: https://example.com
  * Text Domain: woocommerce-conversion-suite
  * Domain Path: /languages
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 8.0
- * WC tested up to: 10.0
+ * WC tested up to: 11.2
  *
  * @package WooCommerce_Conversion_Suite
  */
@@ -42,7 +41,7 @@ add_action(
         \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
             'cart_checkout_blocks',
             __FILE__,
-            true
+            false
         );
     }
 );
