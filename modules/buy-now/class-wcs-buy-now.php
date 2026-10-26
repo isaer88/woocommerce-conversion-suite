@@ -197,6 +197,13 @@ JS;
             return;
         }
 
+        if (
+            ! isset( $_POST['wcs_buy_now'] )
+            || ! is_scalar( $_POST['wcs_buy_now'] )
+        ) {
+            return;
+        }
+
         $product_id = absint(
             wp_unslash( $_POST['wcs_buy_now'] )
         );

@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Conversion Suite module manager.
@@ -90,7 +89,9 @@ final class WCS_Module_Manager {
 
         $enabled[] = $id;
 
-        return update_option( self::OPTION_NAME, $enabled );
+        update_option( self::OPTION_NAME, $enabled );
+
+        return self::is_module_enabled( $id );
     }
 
     public static function disable_module( $id ) {
@@ -106,7 +107,9 @@ final class WCS_Module_Manager {
             array_diff( $enabled, array( $id ) )
         );
 
-        return update_option( self::OPTION_NAME, $enabled );
+        update_option( self::OPTION_NAME, $enabled );
+
+        return ! self::is_module_enabled( $id );
     }
 
     public function ajax_toggle_module() {

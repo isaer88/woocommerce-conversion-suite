@@ -122,13 +122,31 @@ final class WCS_One_Click_Order_Ajax {
             wp_unslash( $_POST['product_id'] )
         );
 
-        $quantity = absint(
-            wp_unslash( $_POST['quantity'] )
-        );
+        $quantity_raw = wp_unslash( $_POST['quantity'] );
+
+        if (
+            ! preg_match( '/^[1-9][0-9]*$/', $quantity_raw )
+            || strlen( $quantity_raw ) > 2
+            || (int) $quantity_raw > 20
+        ) {
+            $this->error(
+                'Quantity must be between 1 and 20.',
+                400
+            );
+        }
+
+        $quantity = (int) $quantity_raw;
 
         $name = sanitize_text_field(
             wp_unslash( $_POST['customer_name'] )
         );
+
+        if ( mb_strlen( $name, 'UTF-8' ) > 100 ) {
+            $this->error(
+                'Customer name must not exceed 100 characters.',
+                400
+            );
+        }
 
         $phone = sanitize_text_field(
             wp_unslash( $_POST['customer_phone'] )
@@ -217,59 +235,86 @@ final class WCS_One_Click_Order_Ajax {
             )
             : 'unknown';
 
-        $rate_key = 'wcs_oco_rate_' . md5( $ip );
+        // Atomic IP-based rate limiting: max 5 attempts per hour.
+        // Uses unique option names to prevent concurrent requests
+        // from claiming the same attempt slot.
 
-        $attempts = (int) get_transient( $rate_key );
+        $rate_prefix = 'wcs_oco_rate_' . md5( $ip ) . '_';
+        $rate_window = (int) floor( time() / HOUR_IN_SECONDS );
+        $rate_allowed = false;
 
-        if ( $attempts >= 5 ) {
+        for ( $attempt = 1; $attempt <= 5; $attempt++ ) {
+            $rate_key = $rate_prefix . $rate_window . '_' . $attempt;
+
+            if ( add_option( $rate_key, time(), '', false ) ) {
+                $rate_allowed = true;
+                break;
+            }
+        }
+
+        if ( ! $rate_allowed ) {
             $this->error(
                 'Too many requests. Please try again later.',
                 429
             );
         }
 
-        set_transient(
-            $rate_key,
-            $attempts + 1,
-            HOUR_IN_SECONDS
-        );
-
-        // Atomic reservation through the unique option name.
+        // During the rolling upgrade, the legacy option is acquired first.
+        // This also blocks older AJAX handlers still using add_option().
         $request_key = 'wcs_oco_request_' . hash(
             'sha256',
             strtolower( $request_id )
         );
 
-        if (
-            ! add_option(
-                $request_key,
-                'processing',
-                '',
-                false
-            )
-        ) {
-            $this->error(
-                'This order request has already been submitted.',
-                409
-            );
+        if ( ! class_exists( 'WCS_OCO_Idempotency', false ) ) {
+            $storage_file = WCS_PLUGIN_PATH . 'includes/class-wcs-oco-idempotency.php';
+            if ( ! is_readable( $storage_file ) ) {
+                $this->error( 'Order storage is unavailable.', 503 );
+            }
+            require_once $storage_file;
         }
 
-        // Cleanup abandoned processing reservations after 24 hours.
+        // Do not create an order if the dedicated storage is not installed.
+        if ( WCS_OCO_DB_VERSION !== get_option( 'wcs_oco_table_version' ) ) {
+            $this->error( 'Order storage is not ready. Please try again later.', 503 );
+        }
+
+        if ( ! add_option( $request_key, 'processing', '', false ) ) {
+            $this->error( 'This order request has already been submitted.', 409 );
+        }
+
+        if ( ! WCS_OCO_Idempotency::reserve( $request_id ) ) {
+            // The legacy reservation was created by this request; roll it back.
+            delete_option( $request_key );
+
+            global $wpdb;
+            $table = WCS_OCO_Idempotency::table_name();
+            $existing = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT request_hash FROM {$table} WHERE request_hash = %s LIMIT 1",
+                    WCS_OCO_Idempotency::hash_request( $request_id )
+                )
+            );
+
+            if ( is_string( $existing ) && '' !== $existing ) {
+                $this->error( 'This order request has already been submitted.', 409 );
+            }
+            $this->error( 'Order storage is temporarily unavailable.', 503 );
+        }
+
+        // Keep the legacy reservation for compatibility with older handlers.
+        // It must not be removed until the rolling upgrade is complete.
         $scheduled = wp_schedule_single_event(
             time() + DAY_IN_SECONDS,
             'wcs_oco_cleanup_request',
             array( $request_key ),
             true
         );
-
         if ( is_wp_error( $scheduled ) || ! $scheduled ) {
-            error_log(
-                'WCS OCO: Failed to schedule request cleanup.'
-            );
+            error_log( 'WCS OCO: Failed to schedule legacy reservation review.' );
         }
 
         $order = false;
-        $cleanup_confirmed = false;
 
         try {
             $order = wc_create_order(
@@ -343,22 +388,15 @@ final class WCS_One_Click_Order_Ajax {
                 );
             }
 
-            // Store the order ID for duplicate detection.
+            // Both stores must be updated before acknowledging the order.
             $order_id = (string) $order->get_id();
+            if ( ! WCS_OCO_Idempotency::complete( $request_id, $order->get_id() ) ) {
+                throw new RuntimeException( 'Unable to complete database reservation.' );
+            }
 
-            $updated = update_option(
-                $request_key,
-                $order_id,
-                false
-            );
-
-            if (
-                ! $updated
-                && $order_id !== (string) get_option( $request_key, '' )
-            ) {
-                throw new RuntimeException(
-                    'Unable to persist the order request reservation.'
-                );
+            $updated = update_option( $request_key, $order_id, false );
+            if ( ! $updated && $order_id !== (string) get_option( $request_key, '' ) ) {
+                throw new RuntimeException( 'Unable to complete legacy reservation.' );
             }
 
             wp_send_json_success(
@@ -370,42 +408,31 @@ final class WCS_One_Click_Order_Ajax {
 
         } catch ( Throwable $exception ) {
 
-            if ( $order instanceof WC_Order ) {
-                try {
-                    $order_id = $order->get_id();
+            // Once order creation has been attempted, deleting an order or
+            // releasing its reservation may allow duplicate external effects.
+            // Preserve the order and both idempotency locks for reconciliation.
+            $failed_order_id = $order instanceof WC_Order ? absint( $order->get_id() ) : 0;
 
-                    if ( $order_id ) {
-                        $order->delete( true );
+            $marked = WCS_OCO_Idempotency::mark_uncertain(
+                $request_id,
+                $failed_order_id > 0 ? $failed_order_id : null
+            );
 
-                        // Confirm that the order no longer exists.
-                        $cleanup_confirmed = ! wc_get_order(
-                            $order_id
-                        );
-                    } else {
-                        $cleanup_confirmed = true;
-                    }
-                } catch ( Throwable $cleanup_error ) {
-                    error_log(
-                        'WCS OCO cleanup failed: ' .
-                        $cleanup_error->getMessage()
-                    );
-                }
-            } else {
-                $cleanup_confirmed = true;
-            }
-
-            // Only release the request ID when cleanup succeeded.
-            if ( $cleanup_confirmed ) {
-                delete_option( $request_key );
+            if ( 1 !== $marked ) {
+                // A completed reservation must remain completed; a missing or
+                // unmodified reservation requires administrator investigation.
+                error_log( 'WCS OCO: Could not mark reservation uncertain; manual review required.' );
             }
 
             error_log(
-                'WCS OCO error: ' .
+                'WCS OCO error (request hash: ' .
+                WCS_OCO_Idempotency::hash_request( $request_id ) .
+                ', order ID: ' . $failed_order_id . '): ' .
                 $exception->getMessage()
             );
 
             $this->error(
-                'We could not create your request. Please try again.',
+                'We could not confirm your order request. Please contact the store before trying again.',
                 500
             );
         }

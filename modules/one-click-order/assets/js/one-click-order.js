@@ -27,6 +27,7 @@
         let isOpen = false;
         let isSubmitting = false;
         let completed = false;
+        let rateLimited = false;
         let previousFocus = null;
         let previousOverflow = '';
         let requestId = generateRequestId();
@@ -73,6 +74,12 @@
         function openModal() {
             if (isOpen) {
                 return;
+            }
+
+            if (rateLimited && !completed) {
+                rateLimited = false;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Order Request';
             }
 
             previousFocus = document.activeElement;
@@ -212,6 +219,34 @@
                         result.data.message
                             ? result.data.message
                             : 'Unable to create the order.';
+
+                    if (response.status === 409) {
+                        completed = true;
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Request Already Submitted';
+
+                        setFeedback(
+                            'This request has already been submitted. ' +
+                            'Please contact the store to confirm your order ' +
+                            'before trying again.',
+                            false
+                        );
+
+                        return;
+                    }
+
+                    if (response.status === 429) {
+                        rateLimited = true;
+                        setFeedback(
+                            'Too many requests. Please try again later.',
+                            false
+                        );
+
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Please Try Again Later';
+
+                        return;
+                    }
 
                     throw new Error(message);
                 }

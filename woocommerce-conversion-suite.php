@@ -52,6 +52,85 @@ define( 'WCS_PLUGIN_FILE', __FILE__ );
 define( 'WCS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'WCS_OCO_DB_VERSION', '1.0.0' );
+
+/**
+ * Load One Click Order idempotency storage.
+ */
+require_once WCS_PLUGIN_PATH . 'includes/class-wcs-oco-idempotency.php';
+
+/**
+ * Install or upgrade One Click Order storage.
+ */
+function wcs_install_oco_idempotency() {
+    require_once WCS_PLUGIN_PATH . 'includes/class-wcs-oco-idempotency.php';
+
+    WCS_OCO_Idempotency::install();
+
+    global $wpdb;
+
+    $table = WCS_OCO_Idempotency::table_name();
+
+    // Confirm that dbDelta actually created the table.
+    $found = $wpdb->get_var(
+        $wpdb->prepare(
+            'SHOW TABLES LIKE %s',
+            $wpdb->esc_like( $table )
+        )
+    );
+
+    if ( $found !== $table ) {
+        error_log(
+            'WCS OCO: Failed to create idempotency table.'
+        );
+
+        return false;
+    }
+
+    update_option(
+        'wcs_oco_table_version',
+        WCS_OCO_DB_VERSION,
+        false
+    );
+
+    return true;
+}
+
+register_activation_hook(
+    __FILE__,
+    'wcs_install_oco_idempotency'
+);
+
+/**
+ * Remove scheduled OCO cleanup on plugin deactivation.
+ */
+function wcs_deactivate_oco_cleanup() {
+    wp_clear_scheduled_hook( 'wcs_oco_cleanup_completed' );
+}
+
+register_deactivation_hook(
+    __FILE__,
+    'wcs_deactivate_oco_cleanup'
+);
+
+/**
+ * Upgrade storage on sites where the plugin is already active.
+ */
+function wcs_maybe_upgrade_oco_storage() {
+    if (
+        get_option( 'wcs_oco_table_version' )
+        === WCS_OCO_DB_VERSION
+    ) {
+        return;
+    }
+
+    wcs_install_oco_idempotency();
+}
+
+add_action(
+    'admin_init',
+    'wcs_maybe_upgrade_oco_storage'
+);
 
 /**
  * Перевіряє наявність WooCommerce.
