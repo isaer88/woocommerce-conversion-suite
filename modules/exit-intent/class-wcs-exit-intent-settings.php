@@ -143,7 +143,7 @@ final class WCS_Exit_Intent_Settings {
             wp_die(
                 esc_html__(
                     'Permission denied.',
-                    'woocommerce-conversion-suite'
+                    'conversion-suite-for-woocommerce'
                 )
             );
         }

@@ -1,12 +1,13 @@
 <?php
 /**
- * Plugin Name: WooCommerce Conversion Suite
+ * Plugin Name: Conversion Suite for WooCommerce
  * Plugin URI: https://github.com/isaer88/woocommerce-conversion-suite
- * Description: Набір інструментів для підвищення конверсії та продажів у WooCommerce.
+ * Description: A modular WooCommerce toolkit with checkout shortcuts, product enhancements, and conversion-focused features.
  * Version: 0.1.0
  * Author: Oleksandr Yeremenko
- * Text Domain: woocommerce-conversion-suite
- * Domain Path: /languages
+ * Text Domain: conversion-suite-for-woocommerce
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * WC requires at least: 8.0
@@ -79,9 +80,12 @@ function wcs_install_oco_idempotency() {
     );
 
     if ( $found !== $table ) {
-        error_log(
-            'WCS OCO: Failed to create idempotency table.'
-        );
+        if ( function_exists( 'wc_get_logger' ) ) {
+            wc_get_logger()->error(
+                'Failed to create idempotency table.',
+                array( 'source' => 'wcs-one-click-order' )
+            );
+        }
 
         return false;
     }
@@ -145,7 +149,7 @@ function wcs_woocommerce_missing_notice() {
 	?>
 	<div class="notice notice-error">
 		<p>
-			<strong>WooCommerce Conversion Suite</strong>
+			<strong>Conversion Suite for WooCommerce</strong>
 			потребує встановленого та активованого WooCommerce.
 		</p>
 	</div>
@@ -166,4 +170,4 @@ function wcs_run_plugin() {
 	WCS_Plugin::instance()->run();
 }
 
-add_action( 'plugins_loaded', 'wcs_run_plugin' ); 
+add_action( 'plugins_loaded', 'wcs_run_plugin' );

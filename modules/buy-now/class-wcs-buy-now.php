@@ -82,15 +82,11 @@ final class WCS_Buy_Now {
             return;
         }
 
-        $disabled = $product->is_type( 'variable' )
-            ? ' disabled="disabled"'
-            : '';
-
         printf(
-            '<button type="submit" name="wcs_buy_now" value="%1$d" class="button alt wcs-buy-now-button"%3$s>%2$s</button>',
+            '<button type="submit" name="wcs_buy_now" value="%1$d" class="button alt wcs-buy-now-button" %3$s>%2$s</button>',
             absint( $product->get_id() ),
             esc_html( $this->settings['button_text'] ),
-            $disabled
+            disabled( $product->is_type( 'variable' ), true, false )
         );
     }
 
@@ -187,7 +183,7 @@ JS;
      */
     public function prepare_buy_now() {
         if (
-            'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' )
+            'POST' !== sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) )
             || ! isset( $_POST['wcs_buy_now'] )
         ) {
             return;

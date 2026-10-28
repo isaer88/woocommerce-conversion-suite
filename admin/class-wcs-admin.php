@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 class WCS_Admin {
 
-    const MENU_SLUG = 'woocommerce-conversion-suite';
+    const MENU_SLUG = 'conversion-suite-for-woocommerce';
 
     public function register_menu() {
         add_menu_page(
@@ -37,7 +37,7 @@ class WCS_Admin {
             wp_die(
                 esc_html__(
                     'Permission denied.',
-                    'woocommerce-conversion-suite'
+                    'conversion-suite-for-woocommerce'
                 )
             );
         }

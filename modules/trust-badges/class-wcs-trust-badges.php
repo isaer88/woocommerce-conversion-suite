@@ -129,7 +129,7 @@ final class WCS_Trust_Badges {
         ?>
         <div
             class="wcs-trust-badges"
-            aria-label="<?php echo esc_attr__( 'Store information', 'woocommerce-conversion-suite' ); ?>"
+            aria-label="<?php echo esc_attr__( 'Store information', 'conversion-suite-for-woocommerce' ); ?>"
         >
             <?php foreach ( $active as $badge ) : ?>
                 <div class="wcs-trust-badges__item">

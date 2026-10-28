@@ -77,7 +77,7 @@ final class WCS_Quick_Checkout_Settings {
 
     public function render_page() {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_die( esc_html__( 'Permission denied.', 'woocommerce-conversion-suite' ) );
+            wp_die( esc_html__( 'Permission denied.', 'conversion-suite-for-woocommerce' ) );
         }
 
         require __DIR__ . '/views/settings-page.php';

@@ -116,7 +116,7 @@ final class WCS_WhatsApp_Order_Settings {
     public function render_page() {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
             wp_die(
-                esc_html__( 'Permission denied.', 'woocommerce-conversion-suite' )
+                esc_html__( 'Permission denied.', 'conversion-suite-for-woocommerce' )
             );
         }
 

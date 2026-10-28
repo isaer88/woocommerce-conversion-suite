@@ -142,7 +142,7 @@ final class WCS_Low_Stock {
         <div
             class="wcs-low-stock"
             role="status"
-            aria-label="<?php echo esc_attr__( 'Low stock notice', 'woocommerce-conversion-suite' ); ?>"
+            aria-label="<?php echo esc_attr__( 'Low stock notice', 'conversion-suite-for-woocommerce' ); ?>"
         >
             <div class="wcs-low-stock__message">
                 <span class="wcs-low-stock__icon" aria-hidden="true">
@@ -158,7 +158,7 @@ final class WCS_Low_Stock {
                 <div
                     class="wcs-low-stock__track"
                     role="progressbar"
-                    aria-label="<?php echo esc_attr__( 'Remaining stock relative to alert threshold', 'woocommerce-conversion-suite' ); ?>"
+                    aria-label="<?php echo esc_attr__( 'Remaining stock relative to alert threshold', 'conversion-suite-for-woocommerce' ); ?>"
                     aria-valuemin="0"
                     aria-valuemax="<?php echo esc_attr( $threshold ); ?>"
                     aria-valuenow="<?php echo esc_attr( $stock ); ?>"
@@ -173,8 +173,9 @@ final class WCS_Low_Stock {
                     <span>
                         <?php
                         printf(
-                            esc_html__( '%d items remaining', 'woocommerce-conversion-suite' ),
-                            $stock
+                            /* translators: %d: Number of items remaining in stock. */
+                            esc_html__( '%d items remaining', 'conversion-suite-for-woocommerce' ),
+                            absint( $stock )
                         );
                         ?>
                     </span>
@@ -182,8 +183,9 @@ final class WCS_Low_Stock {
                     <span>
                         <?php
                         printf(
-                            esc_html__( 'Threshold: %d', 'woocommerce-conversion-suite' ),
-                            $threshold
+                            /* translators: %d: Low-stock alert threshold. */
+                            esc_html__( 'Threshold: %d', 'conversion-suite-for-woocommerce' ),
+                            absint( $threshold )
                         );
                         ?>
                     </span>

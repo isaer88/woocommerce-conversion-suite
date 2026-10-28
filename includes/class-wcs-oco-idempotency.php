@@ -68,11 +68,12 @@ final class WCS_OCO_Idempotency {
         $rows = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT option_id, option_name, option_value
-                 FROM {$options_table}
+                 FROM %i
                  WHERE option_id > %d
                    AND option_name LIKE %s
                  ORDER BY option_id ASC
                  LIMIT %d",
+                $options_table,
                 $after_id,
                 $wpdb->esc_like( 'wcs_oco_request_' ) . '%',
                 $limit
@@ -116,12 +117,29 @@ final class WCS_OCO_Idempotency {
 
             // A duplicate is harmless only when the existing record is compatible.
             // The no-op update preserves the existing status and order reference.
+            if ( null === $order_id ) {
             $result = $wpdb->query(
                 $wpdb->prepare(
-                    "INSERT INTO {$table}
-                     (request_hash, status, order_id, created_at, updated_at, expires_at)
-                     VALUES (%s, %s, %s, %s, %s, %s)
-                     ON DUPLICATE KEY UPDATE request_hash = request_hash",
+                    "INSERT INTO %i
+                        (request_hash, status, order_id, created_at, updated_at, expires_at)
+                    VALUES (%s, %s, NULL, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE request_hash = request_hash",
+                $table,
+                    $hash,
+                    $status,
+                    $now,
+                    $now,
+                    $expires
+                )
+            );
+        } else {
+            $result = $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO %i
+                        (request_hash, status, order_id, created_at, updated_at, expires_at)
+                    VALUES (%s, %s, %d, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE request_hash = request_hash",
+                $table,
                     $hash,
                     $status,
                     $order_id,
@@ -130,6 +148,7 @@ final class WCS_OCO_Idempotency {
                     $expires
                 )
             );
+        }
 
             if ( false === $result ) {
                 return new WP_Error(
@@ -143,7 +162,8 @@ final class WCS_OCO_Idempotency {
             } else {
                 $existing = $wpdb->get_row(
                     $wpdb->prepare(
-                        "SELECT status, order_id FROM {$table} WHERE request_hash = %s LIMIT 1",
+                        "SELECT status, order_id FROM %i WHERE request_hash = %s LIMIT 1",
+                $table,
                         $hash
                     ),
                     ARRAY_A
@@ -318,11 +338,12 @@ final class WCS_OCO_Idempotency {
 
         return $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM {$table}
+                "DELETE FROM %i
                 WHERE status = %s
                 AND expires_at < %s
                 ORDER BY expires_at ASC
                 LIMIT %d",
+                $table,
                 'completed',
                 $now,
                 $limit
@@ -364,7 +385,7 @@ add_action( 'wcs_oco_cleanup_completed', function () {
         $rows = $wpdb->get_col(
             $wpdb->prepare(
                 "SELECT option_name
-                FROM {$options_table}
+                FROM %i
                 WHERE option_name LIKE %s
                 AND option_name REGEXP %s
                 AND CAST(
@@ -376,6 +397,7 @@ add_action( 'wcs_oco_cleanup_completed', function () {
                 ) < %d
                 ORDER BY option_name ASC
                 LIMIT 500",
+                $options_table,
                 $wpdb->esc_like( $prefix ) . '%',
                 '^wcs_oco_rate_[a-f0-9]{32}_[0-9]+_[1-5]$',
                 $current_window

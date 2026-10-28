@@ -1,4 +1,4 @@
-=== WooCommerce Conversion Suite ===
+=== Conversion Suite for WooCommerce ===
 Contributors: isaer88
 Tags: woocommerce, conversion, checkout, add to cart, sales
 Requires at least: 6.4
@@ -13,7 +13,7 @@ A modular toolkit for WooCommerce stores with product-page enhancements, checkou
 
 == Description ==
 
-WooCommerce Conversion Suite provides a collection of optional modules designed to enhance the shopping experience in WooCommerce stores.
+Conversion Suite for WooCommerce provides a collection of optional modules designed to enhance the shopping experience in WooCommerce stores.
 
 Store administrators can enable or disable individual modules from the plugin dashboard.
 
@@ -49,9 +49,9 @@ Features depend on the selected modules and their configuration.
 
 Install and activate WooCommerce.
 
-Upload the WooCommerce Conversion Suite plugin through Plugins > Add New > Upload Plugin.
+Upload the Conversion Suite for WooCommerce plugin through Plugins > Add New > Upload Plugin.
 
-Activate WooCommerce Conversion Suite.
+Activate Conversion Suite for WooCommerce.
 
 Open the plugin dashboard in WordPress administration.
 

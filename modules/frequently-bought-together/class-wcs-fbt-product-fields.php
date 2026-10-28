@@ -103,6 +103,10 @@ final class WCS_FBT_Product_Fields {
         $ids = array();
 
         foreach ( $raw as $id ) {
+            if ( ! is_scalar( $id ) ) {
+                continue;
+            }
+
             $id = absint( $id );
 
             if (

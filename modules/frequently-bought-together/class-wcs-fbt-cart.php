@@ -47,8 +47,11 @@ final class WCS_FBT_Cart {
             );
         }
 
-        $main_id = isset( $_POST['product_id'] )
-            ? absint( $_POST['product_id'] )
+        $main_id = (
+            isset( $_POST['product_id'] )
+            && is_scalar( $_POST['product_id'] )
+        )
+            ? absint( wp_unslash( $_POST['product_id'] ) )
             : 0;
 
         $main = wc_get_product( $main_id );
@@ -81,11 +84,27 @@ final class WCS_FBT_Cart {
             );
         }
 
+        foreach ( $raw as $raw_id ) {
+            if ( ! is_scalar( $raw_id ) ) {
+                wp_send_json_error(
+                    array( 'message' => 'Invalid product ID.' ),
+                    400
+                );
+            }
+        }
+
         $selected = array_values(
             array_unique(
                 array_filter( array_map( 'absint', $raw ) )
             )
         );
+
+        if ( in_array( $main_id, $selected, true ) ) {
+            wp_send_json_error(
+                array( 'message' => 'Main product cannot be selected twice.' ),
+                400
+            );
+        }
 
         $settings = WCS_FBT_Settings::get_settings();
         $limit = max( 1, min( 3, absint( $settings['max_products'] ) ) );

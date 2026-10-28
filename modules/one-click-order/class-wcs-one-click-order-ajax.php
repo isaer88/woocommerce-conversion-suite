@@ -8,6 +8,20 @@
 defined( 'ABSPATH' ) || exit;
 
 final class WCS_One_Click_Order_Ajax {
+    /**
+     * Log operational errors through WooCommerce.
+     *
+     * @param string $message Error message.
+     */
+    private static function log_error( $message ) {
+        if ( function_exists( 'wc_get_logger' ) ) {
+            wc_get_logger()->error(
+                $message,
+                array( 'source' => 'wcs-one-click-order' )
+            );
+        }
+    }
+
 
     public function register_hooks() {
         add_action(
@@ -48,27 +62,10 @@ final class WCS_One_Click_Order_Ajax {
         // A processing reservation may belong to an order
         // whose ID could not be persisted.
         if ( 'processing' === get_option( $key, false ) ) {
-            error_log(
+            self::log_error(
                 'WCS OCO: Reservation requires manual review: ' . $key
             );
         }
-    }
-
-    private function get_post_string( $key, $max_length = 255 ) {
-        if (
-            ! isset( $_POST[ $key ] )
-            || ! is_string( $_POST[ $key ] )
-        ) {
-            return '';
-        }
-
-        $value = wp_unslash( $_POST[ $key ] );
-
-        if ( strlen( $value ) > $max_length ) {
-            return '';
-        }
-
-        return sanitize_text_field( $value );
     }
 
     public function create_order() {
@@ -291,7 +288,8 @@ final class WCS_One_Click_Order_Ajax {
             $table = WCS_OCO_Idempotency::table_name();
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT request_hash FROM {$table} WHERE request_hash = %s LIMIT 1",
+                    "SELECT request_hash FROM %i WHERE request_hash = %s LIMIT 1",
+                $table,
                     WCS_OCO_Idempotency::hash_request( $request_id )
                 )
             );
@@ -311,7 +309,7 @@ final class WCS_One_Click_Order_Ajax {
             true
         );
         if ( is_wp_error( $scheduled ) || ! $scheduled ) {
-            error_log( 'WCS OCO: Failed to schedule legacy reservation review.' );
+            self::log_error( 'WCS OCO: Failed to schedule legacy reservation review.' );
         }
 
         $order = false;
@@ -421,10 +419,10 @@ final class WCS_One_Click_Order_Ajax {
             if ( 1 !== $marked ) {
                 // A completed reservation must remain completed; a missing or
                 // unmodified reservation requires administrator investigation.
-                error_log( 'WCS OCO: Could not mark reservation uncertain; manual review required.' );
+                self::log_error( 'WCS OCO: Could not mark reservation uncertain; manual review required.' );
             }
 
-            error_log(
+            self::log_error(
                 'WCS OCO error (request hash: ' .
                 WCS_OCO_Idempotency::hash_request( $request_id ) .
                 ', order ID: ' . $failed_order_id . '): ' .

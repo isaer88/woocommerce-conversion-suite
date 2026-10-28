@@ -122,8 +122,20 @@ final class WCS_Recently_Viewed {
             ? wp_unslash( $_POST['product_ids'] )
             : array();
 
-        if ( ! is_array( $raw ) ) {
-            wp_send_json_error( array( 'message' => 'Invalid product IDs.' ), 400 );
+        if ( ! is_array( $raw ) || count( $raw ) > 20 ) {
+            wp_send_json_error(
+                array( 'message' => 'Invalid product IDs. Maximum 20 products allowed.' ),
+                400
+            );
+        }
+
+        foreach ( $raw as $raw_id ) {
+            if ( ! is_scalar( $raw_id ) ) {
+                wp_send_json_error(
+                    array( 'message' => 'Invalid product ID.' ),
+                    400
+                );
+            }
         }
 
         $ids = array_slice(

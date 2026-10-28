@@ -1,0 +1,14 @@
+.git
+.github
+.gitignore
+.gitattributes
+.distignore
+.vscode
+.idea
+node_modules
+vendor
+tests
+*.log
+*.zip
+*.bak
+*.sql
