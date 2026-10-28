@@ -3,7 +3,7 @@
  * Plugin Name: Conversion Suite for WooCommerce
  * Plugin URI: https://github.com/isaer88/woocommerce-conversion-suite
  * Description: A modular WooCommerce toolkit with checkout shortcuts, product enhancements, and conversion-focused features.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: Oleksandr Yeremenko
  * Text Domain: conversion-suite-for-woocommerce
  * License: GPLv2 or later
@@ -47,7 +47,7 @@ add_action(
     }
 );
 
-define( 'WCS_VERSION', '0.1.0' );
+define( 'WCS_VERSION', '0.1.1' );
 define( 'WCS_PLUGIN_FILE', __FILE__ );
 define( 'WCS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
