@@ -1,11 +1,11 @@
-=== Conversion Suite for WooCommerce ===
+=== Veltrixa Toolkit for WooCommerce ===
 Contributors: isaer88
 Tags: woocommerce, conversion, checkout, add to cart, sales
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ A modular toolkit for WooCommerce stores with product-page enhancements, checkou
 
 == Description ==
 
-Conversion Suite for WooCommerce provides a collection of optional modules designed to enhance the shopping experience in WooCommerce stores.
+Veltrixa Toolkit for WooCommerce provides a collection of optional modules designed to enhance the shopping experience in WooCommerce stores.
 
 Store administrators can enable or disable individual modules from the plugin dashboard.
 
@@ -49,9 +49,9 @@ Features depend on the selected modules and their configuration.
 
 Install and activate WooCommerce.
 
-Upload the Conversion Suite for WooCommerce plugin through Plugins > Add New > Upload Plugin.
+Upload the Veltrixa Toolkit for WooCommerce plugin through Plugins > Add New > Upload Plugin.
 
-Activate Conversion Suite for WooCommerce.
+Activate Veltrixa Toolkit for WooCommerce.
 
 Open the plugin dashboard in WordPress administration.
 
@@ -72,6 +72,11 @@ Yes. Modules can be enabled or disabled independently.
 Quick Checkout is designed for the classic WooCommerce checkout form.
 
 == Changelog ==
+
+= 0.1.2 =
+
+* Renamed the plugin to Veltrixa Toolkit for WooCommerce.
+* Updated plugin metadata and WooCommerce dependency declaration.
 
 = 0.1.1 =
 
