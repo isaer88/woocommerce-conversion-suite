@@ -144,7 +144,7 @@ final class WCS_WhatsApp_Order {
                 <p class="wcs-wa-order__hint" aria-live="polite">
                     <?php esc_html_e(
                         'Select product options first.',
-                        'conversion-suite-for-woocommerce'
+                        'veltrixa-toolkit-for-woocommerce'
                     ); ?>
                 </p>
             <?php endif; ?>

@@ -37,7 +37,7 @@ class WCS_Admin {
             wp_die(
                 esc_html__(
                     'Permission denied.',
-                    'conversion-suite-for-woocommerce'
+                    'veltrixa-toolkit-for-woocommerce'
                 )
             );
         }

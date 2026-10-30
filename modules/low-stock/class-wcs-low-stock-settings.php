@@ -111,7 +111,7 @@ final class WCS_Low_Stock_Settings {
             wp_die(
                 esc_html__(
                     'Permission denied.',
-                    'conversion-suite-for-woocommerce'
+                    'veltrixa-toolkit-for-woocommerce'
                 )
             );
         }

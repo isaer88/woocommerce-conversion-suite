@@ -41,7 +41,7 @@ $has_cta = (
             type="button"
             class="wcs-exit-intent__close"
             data-wcs-ei-close
-            aria-label="<?php echo esc_attr__( 'Close popup', 'conversion-suite-for-woocommerce' ); ?>"
+            aria-label="<?php echo esc_attr__( 'Close popup', 'veltrixa-toolkit-for-woocommerce' ); ?>"
         >
             <span aria-hidden="true">&times;</span>
         </button>

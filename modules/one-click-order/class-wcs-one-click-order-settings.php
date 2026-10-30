@@ -99,7 +99,7 @@ final class WCS_One_Click_Order_Settings {
     public function render_page() {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
             wp_die(
-                esc_html__( 'Permission denied.', 'conversion-suite-for-woocommerce' )
+                esc_html__( 'Permission denied.', 'veltrixa-toolkit-for-woocommerce' )
             );
         }
 

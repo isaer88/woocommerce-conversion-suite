@@ -143,7 +143,7 @@ final class WCS_Exit_Intent_Settings {
             wp_die(
                 esc_html__(
                     'Permission denied.',
-                    'conversion-suite-for-woocommerce'
+                    'veltrixa-toolkit-for-woocommerce'
                 )
             );
         }

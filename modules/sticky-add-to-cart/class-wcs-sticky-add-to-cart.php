@@ -157,8 +157,8 @@ final class WCS_Sticky_Add_To_Cart {
                     <?php
                     echo esc_html(
                         $product->is_type( 'variable' )
-                            ? __( 'Choose options', 'conversion-suite-for-woocommerce' )
-                            : __( 'Add to cart', 'conversion-suite-for-woocommerce' )
+                            ? __( 'Choose options', 'veltrixa-toolkit-for-woocommerce' )
+                            : __( 'Add to cart', 'veltrixa-toolkit-for-woocommerce' )
                     );
                     ?>
                 </button>
