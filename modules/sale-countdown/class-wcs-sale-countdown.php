@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sale_Countdown {
+final class VELTRIXA_Sale_Countdown {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Sale_Countdown_Settings::get_settings();
+        $this->settings = VELTRIXA_Sale_Countdown_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -45,7 +45,7 @@ final class WCS_Sale_Countdown {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/sale-countdown/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/sale-countdown/assets/';
         $path = __DIR__ . '/assets/';
 
         wp_enqueue_style(

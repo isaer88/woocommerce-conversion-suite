@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Buy_Now {
+final class VELTRIXA_Buy_Now {
 
     private $settings = array();
     private $buy_now_request = false;

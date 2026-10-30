@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Trust_Badges {
+final class VELTRIXA_Trust_Badges {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Trust_Badges_Settings::get_settings();
+        $this->settings = VELTRIXA_Trust_Badges_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -42,7 +42,7 @@ final class WCS_Trust_Badges {
 
         wp_enqueue_style(
             'wcs-trust-badges',
-            WCS_PLUGIN_URL . 'modules/trust-badges/assets/css/trust-badges.css',
+            VELTRIXA_PLUGIN_URL . 'modules/trust-badges/assets/css/trust-badges.css',
             array(),
             file_exists( $file ) ? filemtime( $file ) : '1.0.0'
         );

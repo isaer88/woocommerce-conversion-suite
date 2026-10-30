@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_One_Click_Order_Module extends WCS_Module {
+final class VELTRIXA_One_Click_Order_Module extends VELTRIXA_Module {
 
     protected $id = 'one-click-order';
     protected $name = 'One Click Order';
@@ -23,7 +23,7 @@ final class WCS_One_Click_Order_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-one-click-order-settings.php';
 
-        ( new WCS_One_Click_Order_Settings() )->register_hooks();
+        ( new VELTRIXA_One_Click_Order_Settings() )->register_hooks();
     }
 
     public function register_hooks() {
@@ -31,9 +31,9 @@ final class WCS_One_Click_Order_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-one-click-order-ajax.php';
         require_once __DIR__ . '/class-wcs-one-click-order.php';
 
-        ( new WCS_One_Click_Order() )->register_hooks();
-        ( new WCS_One_Click_Order_Ajax() )->register_hooks();
+        ( new VELTRIXA_One_Click_Order() )->register_hooks();
+        ( new VELTRIXA_One_Click_Order_Ajax() )->register_hooks();
     }
 }
 
-return new WCS_One_Click_Order_Module();
+return new VELTRIXA_One_Click_Order_Module();

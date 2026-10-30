@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Quick_Checkout_Settings::get_settings();
-$option   = WCS_Quick_Checkout_Settings::OPTION_NAME;
+$settings = VELTRIXA_Quick_Checkout_Settings::get_settings();
+$option   = VELTRIXA_Quick_Checkout_Settings::OPTION_NAME;
 
 $fields = array(
     'hide_company' => array(

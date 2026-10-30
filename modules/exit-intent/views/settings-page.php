@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Exit_Intent_Settings::get_settings();
-$option   = WCS_Exit_Intent_Settings::OPTION_NAME;
+$settings = VELTRIXA_Exit_Intent_Settings::get_settings();
+$option   = VELTRIXA_Exit_Intent_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

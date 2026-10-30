@@ -7,14 +7,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Recently_Viewed {
+final class VELTRIXA_Recently_Viewed {
 
     const AJAX_ACTION = 'wcs_recently_viewed_products';
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Recently_Viewed_Settings::get_settings();
+        $this->settings = VELTRIXA_Recently_Viewed_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -50,7 +50,7 @@ final class WCS_Recently_Viewed {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/recently-viewed/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/recently-viewed/assets/';
         $path = __DIR__ . '/assets/';
 
         $css = $path . 'css/recently-viewed.css';

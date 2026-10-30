@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sticky_Add_To_Cart {
+final class VELTRIXA_Sticky_Add_To_Cart {
 
     public function register_hooks() {
         add_action(
@@ -47,7 +47,7 @@ final class WCS_Sticky_Add_To_Cart {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/sticky-add-to-cart/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/sticky-add-to-cart/assets/';
 
         $css_file = __DIR__ . '/assets/css/sticky-add-to-cart.css';
         $js_file  = __DIR__ . '/assets/js/sticky-add-to-cart.js';
@@ -61,7 +61,7 @@ final class WCS_Sticky_Add_To_Cart {
         );
 
         // 2. Load module settings.
-        $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
+        $settings = VELTRIXA_Sticky_Add_To_Cart_Settings::get_settings();
 
         $background = sanitize_hex_color(
             $settings['background']
@@ -103,7 +103,7 @@ final class WCS_Sticky_Add_To_Cart {
     public function render_bar() {
         $product = $this->get_product();
 
-        $settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
+        $settings = VELTRIXA_Sticky_Add_To_Cart_Settings::get_settings();
 
         $position_class = 'top' === $settings['position']
             ? 'wcs-sticky-cart--top'

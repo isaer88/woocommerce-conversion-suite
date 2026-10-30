@@ -7,10 +7,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Trust_Badges_Settings::get_settings();
-$option   = WCS_Trust_Badges_Settings::OPTION_NAME;
-$icons    = WCS_Trust_Badges_Settings::icons();
-$defaults = WCS_Trust_Badges_Settings::default_badges();
+$settings = VELTRIXA_Trust_Badges_Settings::get_settings();
+$option   = VELTRIXA_Trust_Badges_Settings::OPTION_NAME;
+$icons    = VELTRIXA_Trust_Badges_Settings::icons();
+$defaults = VELTRIXA_Trust_Badges_Settings::default_badges();
 ?>
 
 <div class="wrap">

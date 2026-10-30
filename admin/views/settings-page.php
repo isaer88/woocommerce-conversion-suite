@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$manager = WCS_Plugin::instance()->get_module_manager();
+$manager = VELTRIXA_Plugin::instance()->get_module_manager();
 
 $registered = $manager
     ? $manager->get_modules()

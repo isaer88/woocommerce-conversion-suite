@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sticky_Add_To_Cart_Settings {
+final class VELTRIXA_Sticky_Add_To_Cart_Settings {
 
     const OPTION_NAME = 'wcs_sticky_add_to_cart_settings';
     const PAGE_SLUG   = 'wcs-sticky-add-to-cart';

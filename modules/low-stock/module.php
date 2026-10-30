@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Low_Stock_Module extends WCS_Module {
+final class VELTRIXA_Low_Stock_Module extends VELTRIXA_Module {
 
     protected $id = 'low-stock';
     protected $name = 'Low Stock';
@@ -23,15 +23,15 @@ final class WCS_Low_Stock_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-low-stock-settings.php';
 
-        ( new WCS_Low_Stock_Settings() )->register_hooks();
+        ( new VELTRIXA_Low_Stock_Settings() )->register_hooks();
     }
 
     public function register_hooks() {
         require_once __DIR__ . '/class-wcs-low-stock-settings.php';
         require_once __DIR__ . '/class-wcs-low-stock.php';
 
-        ( new WCS_Low_Stock() )->register_hooks();
+        ( new VELTRIXA_Low_Stock() )->register_hooks();
     }
 }
 
-return new WCS_Low_Stock_Module();
+return new VELTRIXA_Low_Stock_Module();

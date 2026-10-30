@@ -5,8 +5,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Sticky_Add_To_Cart_Settings::get_settings();
-$option   = WCS_Sticky_Add_To_Cart_Settings::OPTION_NAME;
+$settings = VELTRIXA_Sticky_Add_To_Cart_Settings::get_settings();
+$option   = VELTRIXA_Sticky_Add_To_Cart_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

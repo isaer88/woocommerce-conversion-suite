@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Plugin {
+final class VELTRIXA_Plugin {
 
     private static $instance = null;
 
@@ -39,17 +39,17 @@ final class WCS_Plugin {
     }
 
     private function load_dependencies() {
-        require_once WCS_PLUGIN_PATH . 'includes/class-wcs-module.php';
-        require_once WCS_PLUGIN_PATH . 'includes/class-wcs-module-manager.php';
-        require_once WCS_PLUGIN_PATH . 'admin/class-wcs-admin.php';
-        require_once WCS_PLUGIN_PATH . 'public/class-wcs-public.php';
+        require_once VELTRIXA_PLUGIN_PATH . 'includes/class-wcs-module.php';
+        require_once VELTRIXA_PLUGIN_PATH . 'includes/class-wcs-module-manager.php';
+        require_once VELTRIXA_PLUGIN_PATH . 'admin/class-wcs-admin.php';
+        require_once VELTRIXA_PLUGIN_PATH . 'public/class-wcs-public.php';
     }
 
     private function initialize_core() {
-        $this->module_manager = new WCS_Module_Manager();
+        $this->module_manager = new VELTRIXA_Module_Manager();
 
-        $admin  = new WCS_Admin();
-        $public = new WCS_Public();
+        $admin  = new VELTRIXA_Admin();
+        $public = new VELTRIXA_Public();
 
         add_action(
             'admin_menu',
@@ -70,14 +70,14 @@ final class WCS_Plugin {
     /**
      * Automatically discover modules.
      *
-     * Every module.php must return a WCS_Module instance.
+     * Every module.php must return a VELTRIXA_Module instance.
      */
     private function register_modules() {
         if ( ! $this->module_manager ) {
             return;
         }
 
-        $directory = WCS_PLUGIN_PATH . 'modules/';
+        $directory = VELTRIXA_PLUGIN_PATH . 'modules/';
 
         if ( ! is_dir( $directory ) ) {
             return;
@@ -94,7 +94,7 @@ final class WCS_Plugin {
         foreach ( $files as $file ) {
             $module = require $file;
 
-            if ( $module instanceof WCS_Module ) {
+            if ( $module instanceof VELTRIXA_Module ) {
                 $this->module_manager->register_module( $module );
             }
         }

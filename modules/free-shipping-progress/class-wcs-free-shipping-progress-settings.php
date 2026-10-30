@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Free_Shipping_Progress_Settings {
+final class VELTRIXA_Free_Shipping_Progress_Settings {
 
     const OPTION_NAME = 'wcs_free_shipping_progress_settings';
     const PAGE_SLUG = 'wcs-free-shipping-progress';

@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_FBT_Cart {
+final class VELTRIXA_FBT_Cart {
 
     public function register_hooks() {
         add_action(
@@ -106,7 +106,7 @@ final class WCS_FBT_Cart {
             );
         }
 
-        $settings = WCS_FBT_Settings::get_settings();
+        $settings = VELTRIXA_FBT_Settings::get_settings();
         $limit = max( 1, min( 3, absint( $settings['max_products'] ) ) );
 
         if (

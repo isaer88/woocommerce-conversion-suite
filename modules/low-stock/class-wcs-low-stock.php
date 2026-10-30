@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Low_Stock {
+final class VELTRIXA_Low_Stock {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Low_Stock_Settings::get_settings();
+        $this->settings = VELTRIXA_Low_Stock_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -42,7 +42,7 @@ final class WCS_Low_Stock {
 
         wp_enqueue_style(
             'wcs-low-stock',
-            WCS_PLUGIN_URL .
+            VELTRIXA_PLUGIN_URL .
                 'modules/low-stock/assets/css/low-stock.css',
             array(),
             file_exists( $file ) ? filemtime( $file ) : '1.0.0'

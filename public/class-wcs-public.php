@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class WCS_Public {
+class VELTRIXA_Public {
 
 	/**
 	 * Підключає стилі та скрипти на сайті.
@@ -25,16 +25,16 @@ class WCS_Public {
 
 		wp_enqueue_style(
 			'wcs-public',
-			WCS_PLUGIN_URL . 'public/css/public.css',
+			VELTRIXA_PLUGIN_URL . 'public/css/public.css',
 			array(),
-			WCS_VERSION
+			VELTRIXA_VERSION
 		);
 
 		wp_enqueue_script(
 			'wcs-public',
-			WCS_PLUGIN_URL . 'public/js/public.js',
+			VELTRIXA_PLUGIN_URL . 'public/js/public.js',
 			array(),
-			WCS_VERSION,
+			VELTRIXA_VERSION,
 			true
 		);
 	}

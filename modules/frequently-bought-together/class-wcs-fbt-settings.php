@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_FBT_Settings {
+final class VELTRIXA_FBT_Settings {
 
     const OPTION_NAME = 'wcs_fbt_settings';
     const PAGE_SLUG = 'wcs-fbt';

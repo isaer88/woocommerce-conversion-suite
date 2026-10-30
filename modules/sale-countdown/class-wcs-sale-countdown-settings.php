@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sale_Countdown_Settings {
+final class VELTRIXA_Sale_Countdown_Settings {
 
     const OPTION_NAME = 'wcs_sale_countdown_settings';
     const PAGE_SLUG = 'wcs-sale-countdown';

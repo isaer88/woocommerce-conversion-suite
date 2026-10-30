@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class WCS_Module {
+abstract class VELTRIXA_Module {
 
     protected $id = '';
     protected $name = '';
@@ -70,8 +70,8 @@ abstract class WCS_Module {
     }
 
     public function is_enabled() {
-        return class_exists( 'WCS_Module_Manager' )
-            && WCS_Module_Manager::is_module_enabled( $this->get_id() );
+        return class_exists( 'VELTRIXA_Module_Manager' )
+            && VELTRIXA_Module_Manager::is_module_enabled( $this->get_id() );
     }
 
     public function to_array() {

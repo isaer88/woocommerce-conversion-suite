@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_One_Click_Order_Ajax {
+final class VELTRIXA_One_Click_Order_Ajax {
     /**
      * Log operational errors through WooCommerce.
      *
@@ -92,7 +92,7 @@ final class WCS_One_Click_Order_Ajax {
             );
         }
 
-        $settings = WCS_One_Click_Order_Settings::get_settings();
+        $settings = VELTRIXA_One_Click_Order_Settings::get_settings();
 
         if ( 'yes' !== ( $settings['enabled'] ?? 'no' ) ) {
             $this->error( 'Quick Order is disabled.', 403 );
@@ -263,8 +263,8 @@ final class WCS_One_Click_Order_Ajax {
             strtolower( $request_id )
         );
 
-        if ( ! class_exists( 'WCS_OCO_Idempotency', false ) ) {
-            $storage_file = WCS_PLUGIN_PATH . 'includes/class-wcs-oco-idempotency.php';
+        if ( ! class_exists( 'VELTRIXA_OCO_Idempotency', false ) ) {
+            $storage_file = VELTRIXA_PLUGIN_PATH . 'includes/class-wcs-oco-idempotency.php';
             if ( ! is_readable( $storage_file ) ) {
                 $this->error( 'Order storage is unavailable.', 503 );
             }
@@ -272,7 +272,7 @@ final class WCS_One_Click_Order_Ajax {
         }
 
         // Do not create an order if the dedicated storage is not installed.
-        if ( WCS_OCO_DB_VERSION !== get_option( 'wcs_oco_table_version' ) ) {
+        if ( VELTRIXA_OCO_DB_VERSION !== get_option( 'wcs_oco_table_version' ) ) {
             $this->error( 'Order storage is not ready. Please try again later.', 503 );
         }
 
@@ -280,17 +280,17 @@ final class WCS_One_Click_Order_Ajax {
             $this->error( 'This order request has already been submitted.', 409 );
         }
 
-        if ( ! WCS_OCO_Idempotency::reserve( $request_id ) ) {
+        if ( ! VELTRIXA_OCO_Idempotency::reserve( $request_id ) ) {
             // The legacy reservation was created by this request; roll it back.
             delete_option( $request_key );
 
             global $wpdb;
-            $table = WCS_OCO_Idempotency::table_name();
+            $table = VELTRIXA_OCO_Idempotency::table_name();
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT request_hash FROM %i WHERE request_hash = %s LIMIT 1",
                 $table,
-                    WCS_OCO_Idempotency::hash_request( $request_id )
+                    VELTRIXA_OCO_Idempotency::hash_request( $request_id )
                 )
             );
 
@@ -388,7 +388,7 @@ final class WCS_One_Click_Order_Ajax {
 
             // Both stores must be updated before acknowledging the order.
             $order_id = (string) $order->get_id();
-            if ( ! WCS_OCO_Idempotency::complete( $request_id, $order->get_id() ) ) {
+            if ( ! VELTRIXA_OCO_Idempotency::complete( $request_id, $order->get_id() ) ) {
                 throw new RuntimeException( 'Unable to complete database reservation.' );
             }
 
@@ -411,7 +411,7 @@ final class WCS_One_Click_Order_Ajax {
             // Preserve the order and both idempotency locks for reconciliation.
             $failed_order_id = $order instanceof WC_Order ? absint( $order->get_id() ) : 0;
 
-            $marked = WCS_OCO_Idempotency::mark_uncertain(
+            $marked = VELTRIXA_OCO_Idempotency::mark_uncertain(
                 $request_id,
                 $failed_order_id > 0 ? $failed_order_id : null
             );
@@ -424,7 +424,7 @@ final class WCS_One_Click_Order_Ajax {
 
             self::log_error(
                 'WCS OCO error (request hash: ' .
-                WCS_OCO_Idempotency::hash_request( $request_id ) .
+                VELTRIXA_OCO_Idempotency::hash_request( $request_id ) .
                 ', order ID: ' . $failed_order_id . '): ' .
                 $exception->getMessage()
             );

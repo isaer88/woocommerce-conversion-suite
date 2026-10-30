@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Exit_Intent_Settings {
+final class VELTRIXA_Exit_Intent_Settings {
 
     const OPTION_NAME = 'wcs_exit_intent_settings';
     const PAGE_SLUG   = 'wcs-exit-intent';

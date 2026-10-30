@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Quick_Checkout_Module extends WCS_Module {
+final class VELTRIXA_Quick_Checkout_Module extends VELTRIXA_Module {
 
     protected $id = 'quick-checkout';
     protected $name = 'Quick Checkout';
@@ -23,7 +23,7 @@ final class WCS_Quick_Checkout_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-quick-checkout-settings.php';
 
-        $settings = new WCS_Quick_Checkout_Settings();
+        $settings = new VELTRIXA_Quick_Checkout_Settings();
         $settings->register_hooks();
     }
 
@@ -31,9 +31,9 @@ final class WCS_Quick_Checkout_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-quick-checkout-settings.php';
         require_once __DIR__ . '/class-wcs-quick-checkout.php';
 
-        $frontend = new WCS_Quick_Checkout();
+        $frontend = new VELTRIXA_Quick_Checkout();
         $frontend->register_hooks();
     }
 }
 
-return new WCS_Quick_Checkout_Module();
+return new VELTRIXA_Quick_Checkout_Module();

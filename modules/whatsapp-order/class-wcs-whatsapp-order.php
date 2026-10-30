@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_WhatsApp_Order {
+final class VELTRIXA_WhatsApp_Order {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_WhatsApp_Order_Settings::get_settings();
+        $this->settings = VELTRIXA_WhatsApp_Order_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -158,7 +158,7 @@ final class WCS_WhatsApp_Order {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/whatsapp-order/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/whatsapp-order/assets/';
 
         $css = __DIR__ . '/assets/css/whatsapp-order.css';
         $js  = __DIR__ . '/assets/js/whatsapp-order.js';

@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Trust_Badges_Settings {
+final class VELTRIXA_Trust_Badges_Settings {
 
     const OPTION_NAME = 'wcs_trust_badges_settings';
     const PAGE_SLUG   = 'wcs-trust-badges';

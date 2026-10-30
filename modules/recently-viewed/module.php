@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Recently_Viewed_Module extends WCS_Module {
+final class VELTRIXA_Recently_Viewed_Module extends VELTRIXA_Module {
 
     protected $id = 'recently-viewed';
     protected $name = 'Recently Viewed';
@@ -23,7 +23,7 @@ final class WCS_Recently_Viewed_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-recently-viewed-settings.php';
 
-        $settings = new WCS_Recently_Viewed_Settings();
+        $settings = new VELTRIXA_Recently_Viewed_Settings();
         $settings->register_hooks();
     }
 
@@ -31,9 +31,9 @@ final class WCS_Recently_Viewed_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-recently-viewed-settings.php';
         require_once __DIR__ . '/class-wcs-recently-viewed.php';
 
-        $frontend = new WCS_Recently_Viewed();
+        $frontend = new VELTRIXA_Recently_Viewed();
         $frontend->register_hooks();
     }
 }
 
-return new WCS_Recently_Viewed_Module();
+return new VELTRIXA_Recently_Viewed_Module();

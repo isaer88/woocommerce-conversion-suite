@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_FBT_Settings::get_settings();
-$option   = WCS_FBT_Settings::OPTION_NAME;
+$settings = VELTRIXA_FBT_Settings::get_settings();
+$option   = VELTRIXA_FBT_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

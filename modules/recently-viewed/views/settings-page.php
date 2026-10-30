@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Recently_Viewed_Settings::get_settings();
-$option   = WCS_Recently_Viewed_Settings::OPTION_NAME;
+$settings = VELTRIXA_Recently_Viewed_Settings::get_settings();
+$option   = VELTRIXA_Recently_Viewed_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

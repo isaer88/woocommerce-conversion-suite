@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Low_Stock_Settings {
+final class VELTRIXA_Low_Stock_Settings {
 
     const OPTION_NAME = 'wcs_low_stock_settings';
     const PAGE_SLUG = 'wcs-low-stock';

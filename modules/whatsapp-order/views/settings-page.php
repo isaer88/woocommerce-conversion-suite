@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_WhatsApp_Order_Settings::get_settings();
-$option   = WCS_WhatsApp_Order_Settings::OPTION_NAME;
+$settings = VELTRIXA_WhatsApp_Order_Settings::get_settings();
+$option   = VELTRIXA_WhatsApp_Order_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

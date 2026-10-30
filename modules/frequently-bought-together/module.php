@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_FBT_Module extends WCS_Module {
+final class VELTRIXA_FBT_Module extends VELTRIXA_Module {
 
     protected $id = 'frequently-bought-together';
     protected $name = 'Frequently Bought Together';
@@ -24,8 +24,8 @@ final class WCS_FBT_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-fbt-settings.php';
         require_once __DIR__ . '/class-wcs-fbt-product-fields.php';
 
-        ( new WCS_FBT_Settings() )->register_hooks();
-        ( new WCS_FBT_Product_Fields() )->register_hooks();
+        ( new VELTRIXA_FBT_Settings() )->register_hooks();
+        ( new VELTRIXA_FBT_Product_Fields() )->register_hooks();
     }
 
     public function register_hooks() {
@@ -33,9 +33,9 @@ final class WCS_FBT_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-fbt.php';
         require_once __DIR__ . '/class-wcs-fbt-cart.php';
 
-        ( new WCS_FBT() )->register_hooks();
-        ( new WCS_FBT_Cart() )->register_hooks();
+        ( new VELTRIXA_FBT() )->register_hooks();
+        ( new VELTRIXA_FBT_Cart() )->register_hooks();
     }
 }
 
-return new WCS_FBT_Module();
+return new VELTRIXA_FBT_Module();

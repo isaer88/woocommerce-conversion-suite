@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sale_Countdown_Module extends WCS_Module {
+final class VELTRIXA_Sale_Countdown_Module extends VELTRIXA_Module {
 
     protected $id = 'sale-countdown';
     protected $name = 'Sale Countdown';
@@ -23,15 +23,15 @@ final class WCS_Sale_Countdown_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-sale-countdown-settings.php';
 
-        ( new WCS_Sale_Countdown_Settings() )->register_hooks();
+        ( new VELTRIXA_Sale_Countdown_Settings() )->register_hooks();
     }
 
     public function register_hooks() {
         require_once __DIR__ . '/class-wcs-sale-countdown-settings.php';
         require_once __DIR__ . '/class-wcs-sale-countdown.php';
 
-        ( new WCS_Sale_Countdown() )->register_hooks();
+        ( new VELTRIXA_Sale_Countdown() )->register_hooks();
     }
 }
 
-return new WCS_Sale_Countdown_Module();
+return new VELTRIXA_Sale_Countdown_Module();

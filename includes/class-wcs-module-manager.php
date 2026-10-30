@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Module_Manager {
+final class VELTRIXA_Module_Manager {
 
     const OPTION_NAME = 'wcs_enabled_modules';
 
@@ -21,7 +21,7 @@ final class WCS_Module_Manager {
         );
     }
 
-    public function register_module( WCS_Module $module ) {
+    public function register_module( VELTRIXA_Module $module ) {
         $id = $module->get_id();
 
         if ( ! $id || isset( $this->modules[ $id ] ) ) {

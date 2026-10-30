@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_FBT {
+final class VELTRIXA_FBT {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_FBT_Settings::get_settings();
+        $this->settings = VELTRIXA_FBT_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -38,7 +38,7 @@ final class WCS_FBT {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/frequently-bought-together/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/frequently-bought-together/assets/';
         $path = __DIR__ . '/assets/';
 
         wp_enqueue_style(

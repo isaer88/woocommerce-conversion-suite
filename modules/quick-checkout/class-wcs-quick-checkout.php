@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Quick_Checkout {
+final class VELTRIXA_Quick_Checkout {
 
     private $settings = array();
 
     public function __construct() {
-        $this->settings = WCS_Quick_Checkout_Settings::get_settings();
+        $this->settings = VELTRIXA_Quick_Checkout_Settings::get_settings();
     }
 
     public function register_hooks() {

@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Trust_Badges_Module extends WCS_Module {
+final class VELTRIXA_Trust_Badges_Module extends VELTRIXA_Module {
 
     protected $id = 'trust-badges';
     protected $name = 'Trust Badges';
@@ -23,15 +23,15 @@ final class WCS_Trust_Badges_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-trust-badges-settings.php';
 
-        ( new WCS_Trust_Badges_Settings() )->register_hooks();
+        ( new VELTRIXA_Trust_Badges_Settings() )->register_hooks();
     }
 
     public function register_hooks() {
         require_once __DIR__ . '/class-wcs-trust-badges-settings.php';
         require_once __DIR__ . '/class-wcs-trust-badges.php';
 
-        ( new WCS_Trust_Badges() )->register_hooks();
+        ( new VELTRIXA_Trust_Badges() )->register_hooks();
     }
 }
 
-return new WCS_Trust_Badges_Module();
+return new VELTRIXA_Trust_Badges_Module();

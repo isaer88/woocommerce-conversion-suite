@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Exit_Intent_Module extends WCS_Module {
+final class VELTRIXA_Exit_Intent_Module extends VELTRIXA_Module {
 
     protected $id = 'exit-intent';
     protected $name = 'Exit Intent';
@@ -23,15 +23,15 @@ final class WCS_Exit_Intent_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-exit-intent-settings.php';
 
-        ( new WCS_Exit_Intent_Settings() )->register_hooks();
+        ( new VELTRIXA_Exit_Intent_Settings() )->register_hooks();
     }
 
     public function register_hooks() {
         require_once __DIR__ . '/class-wcs-exit-intent-settings.php';
         require_once __DIR__ . '/class-wcs-exit-intent.php';
 
-        ( new WCS_Exit_Intent() )->register_hooks();
+        ( new VELTRIXA_Exit_Intent() )->register_hooks();
     }
 }
 
-return new WCS_Exit_Intent_Module();
+return new VELTRIXA_Exit_Intent_Module();

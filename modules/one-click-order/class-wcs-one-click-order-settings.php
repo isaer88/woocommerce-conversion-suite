@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_One_Click_Order_Settings {
+final class VELTRIXA_One_Click_Order_Settings {
 
     const OPTION_NAME = 'wcs_one_click_order_settings';
     const PAGE_SLUG   = 'wcs-one-click-order';

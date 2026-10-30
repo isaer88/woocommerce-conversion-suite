@@ -5,8 +5,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_One_Click_Order_Settings::get_settings();
-$option = WCS_One_Click_Order_Settings::OPTION_NAME;
+$settings = VELTRIXA_One_Click_Order_Settings::get_settings();
+$option = VELTRIXA_One_Click_Order_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

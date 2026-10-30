@@ -5,8 +5,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Free_Shipping_Progress_Settings::get_settings();
-$option   = WCS_Free_Shipping_Progress_Settings::OPTION_NAME;
+$settings = VELTRIXA_Free_Shipping_Progress_Settings::get_settings();
+$option   = VELTRIXA_Free_Shipping_Progress_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

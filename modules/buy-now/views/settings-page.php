@@ -6,8 +6,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$settings = WCS_Buy_Now_Settings::get_settings();
-$option   = WCS_Buy_Now_Settings::OPTION_NAME;
+$settings = VELTRIXA_Buy_Now_Settings::get_settings();
+$option   = VELTRIXA_Buy_Now_Settings::OPTION_NAME;
 ?>
 
 <div class="wrap">

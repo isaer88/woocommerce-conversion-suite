@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_OCO_Idempotency {
+final class VELTRIXA_OCO_Idempotency {
 
     const TABLE_SUFFIX   = 'wcs_oco_requests';
     const RETENTION_DAYS = 30;
@@ -369,7 +369,7 @@ add_action( 'wcs_oco_cleanup_completed', function () {
     global $wpdb;
 
     // Cleanup expired completed idempotency reservations.
-    WCS_OCO_Idempotency::cleanup_completed( 100 );
+    VELTRIXA_OCO_Idempotency::cleanup_completed( 100 );
 
     // Remove rate-limit options from previous hourly windows.
     $current_window = (int) floor( time() / HOUR_IN_SECONDS );

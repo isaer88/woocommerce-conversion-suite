@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Buy_Now_Module extends WCS_Module {
+final class VELTRIXA_Buy_Now_Module extends VELTRIXA_Module {
 
     protected $id = 'buy-now';
     protected $name = 'Buy Now';
@@ -23,16 +23,16 @@ final class WCS_Buy_Now_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-buy-now-settings.php';
 
-        $settings = new WCS_Buy_Now_Settings();
+        $settings = new VELTRIXA_Buy_Now_Settings();
         $settings->register_hooks();
     }
 
     public function register_hooks() {
         require_once __DIR__ . '/class-wcs-buy-now.php';
 
-        $frontend = new WCS_Buy_Now();
+        $frontend = new VELTRIXA_Buy_Now();
         $frontend->register_hooks();
     }
 }
 
-return new WCS_Buy_Now_Module();
+return new VELTRIXA_Buy_Now_Module();

@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Free_Shipping_Progress {
+final class VELTRIXA_Free_Shipping_Progress {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Free_Shipping_Progress_Settings::get_settings();
+        $this->settings = VELTRIXA_Free_Shipping_Progress_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -53,7 +53,7 @@ final class WCS_Free_Shipping_Progress {
 
         wp_enqueue_style(
             'wcs-free-shipping-progress',
-            WCS_PLUGIN_URL . 'modules/free-shipping-progress/assets/css/free-shipping-progress.css',
+            VELTRIXA_PLUGIN_URL . 'modules/free-shipping-progress/assets/css/free-shipping-progress.css',
             array(),
             file_exists( $file ) ? filemtime( $file ) : '1.0.0'
         );

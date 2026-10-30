@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_FBT_Product_Fields {
+final class VELTRIXA_FBT_Product_Fields {
 
     const META_KEY = '_wcs_fbt_products';
 

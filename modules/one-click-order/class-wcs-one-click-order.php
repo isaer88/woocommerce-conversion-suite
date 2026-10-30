@@ -5,12 +5,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_One_Click_Order {
+final class VELTRIXA_One_Click_Order {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_One_Click_Order_Settings::get_settings();
+        $this->settings = VELTRIXA_One_Click_Order_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -95,7 +95,7 @@ final class WCS_One_Click_Order {
             return;
         }
 
-        $base = WCS_PLUGIN_URL . 'modules/one-click-order/assets/';
+        $base = VELTRIXA_PLUGIN_URL . 'modules/one-click-order/assets/';
 
         $css = __DIR__ . '/assets/css/one-click-order.css';
         $js  = __DIR__ . '/assets/js/one-click-order.js';

@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Sticky_Add_To_Cart_Module extends WCS_Module {
+final class VELTRIXA_Sticky_Add_To_Cart_Module extends VELTRIXA_Module {
 
     protected $id = 'sticky-add-to-cart';
     protected $name = 'Sticky Add to Cart';
@@ -23,7 +23,7 @@ final class WCS_Sticky_Add_To_Cart_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-sticky-add-to-cart-settings.php';
 
-        $settings = new WCS_Sticky_Add_To_Cart_Settings();
+        $settings = new VELTRIXA_Sticky_Add_To_Cart_Settings();
         $settings->register_hooks();
     }
 
@@ -31,9 +31,9 @@ final class WCS_Sticky_Add_To_Cart_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-sticky-add-to-cart-settings.php';
         require_once __DIR__ . '/class-wcs-sticky-add-to-cart.php';
 
-        $frontend = new WCS_Sticky_Add_To_Cart();
+        $frontend = new VELTRIXA_Sticky_Add_To_Cart();
         $frontend->register_hooks();
     }
 }
 
-return new WCS_Sticky_Add_To_Cart_Module();
+return new VELTRIXA_Sticky_Add_To_Cart_Module();

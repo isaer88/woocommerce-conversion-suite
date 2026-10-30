@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_WhatsApp_Order_Settings {
+final class VELTRIXA_WhatsApp_Order_Settings {
 
     const OPTION_NAME = 'wcs_whatsapp_order_settings';
     const PAGE_SLUG   = 'wcs-whatsapp-order';

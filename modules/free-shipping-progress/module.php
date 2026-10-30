@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Free_Shipping_Progress_Module extends WCS_Module {
+final class VELTRIXA_Free_Shipping_Progress_Module extends VELTRIXA_Module {
 
     protected $id = 'free-shipping-progress';
     protected $name = 'Free Shipping Progress';
@@ -23,7 +23,7 @@ final class WCS_Free_Shipping_Progress_Module extends WCS_Module {
 
         require_once __DIR__ . '/class-wcs-free-shipping-progress-settings.php';
 
-        $settings = new WCS_Free_Shipping_Progress_Settings();
+        $settings = new VELTRIXA_Free_Shipping_Progress_Settings();
         $settings->register_hooks();
     }
 
@@ -31,9 +31,9 @@ final class WCS_Free_Shipping_Progress_Module extends WCS_Module {
         require_once __DIR__ . '/class-wcs-free-shipping-progress-settings.php';
         require_once __DIR__ . '/class-wcs-free-shipping-progress.php';
 
-        $frontend = new WCS_Free_Shipping_Progress();
+        $frontend = new VELTRIXA_Free_Shipping_Progress();
         $frontend->register_hooks();
     }
 }
 
-return new WCS_Free_Shipping_Progress_Module();
+return new VELTRIXA_Free_Shipping_Progress_Module();

@@ -7,12 +7,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Exit_Intent {
+final class VELTRIXA_Exit_Intent {
 
     private $settings;
 
     public function __construct() {
-        $this->settings = WCS_Exit_Intent_Settings::get_settings();
+        $this->settings = VELTRIXA_Exit_Intent_Settings::get_settings();
     }
 
     public function register_hooks() {
@@ -71,7 +71,7 @@ final class WCS_Exit_Intent {
             return;
         }
 
-        $base_url = WCS_PLUGIN_URL . 'modules/exit-intent/assets/';
+        $base_url = VELTRIXA_PLUGIN_URL . 'modules/exit-intent/assets/';
 
         $css_file = __DIR__ . '/assets/css/exit-intent.css';
         $js_file  = __DIR__ . '/assets/js/exit-intent.js';

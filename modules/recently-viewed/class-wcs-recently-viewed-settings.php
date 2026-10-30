@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Recently_Viewed_Settings {
+final class VELTRIXA_Recently_Viewed_Settings {
 
     const OPTION_NAME = 'wcs_recently_viewed_settings';
     const PAGE_SLUG = 'wcs-recently-viewed';

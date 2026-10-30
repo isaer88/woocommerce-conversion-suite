@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Quick_Checkout_Settings {
+final class VELTRIXA_Quick_Checkout_Settings {
 
     const OPTION_NAME = 'wcs_quick_checkout_settings';
     const PAGE_SLUG = 'wcs-quick-checkout';

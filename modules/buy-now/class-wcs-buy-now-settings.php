@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-final class WCS_Buy_Now_Settings {
+final class VELTRIXA_Buy_Now_Settings {
 
     const OPTION_NAME = 'wcs_buy_now_settings';
     const PAGE_SLUG = 'wcs-buy-now';

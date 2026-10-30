@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class WCS_Admin {
+class VELTRIXA_Admin {
 
     const MENU_SLUG = 'conversion-suite-for-woocommerce';
 
@@ -42,7 +42,7 @@ class WCS_Admin {
             );
         }
 
-        require WCS_PLUGIN_PATH . 'admin/views/settings-page.php';
+        require VELTRIXA_PLUGIN_PATH . 'admin/views/settings-page.php';
     }
 
     public function enqueue_assets( $hook_suffix ) {
@@ -55,16 +55,16 @@ class WCS_Admin {
 
         wp_enqueue_style(
             'wcs-admin',
-            WCS_PLUGIN_URL . 'admin/css/admin.css',
+            VELTRIXA_PLUGIN_URL . 'admin/css/admin.css',
             array(),
-            WCS_VERSION
+            VELTRIXA_VERSION
         );
 
         wp_enqueue_script(
             'wcs-admin',
-            WCS_PLUGIN_URL . 'admin/js/admin.js',
+            VELTRIXA_PLUGIN_URL . 'admin/js/admin.js',
             array(),
-            WCS_VERSION,
+            VELTRIXA_VERSION,
             true
         );
 
