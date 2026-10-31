@@ -14,7 +14,7 @@
  * WC requires at least: 8.0
  * WC tested up to: 11.2
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -150,7 +150,7 @@ function veltrixa_woocommerce_missing_notice() {
 	?>
 	<div class="notice notice-error">
 		<p>
-			<strong>Conversion Suite for WooCommerce</strong>
+			<strong>Veltrixa Toolkit for WooCommerce</strong>
 			потребує встановленого та активованого WooCommerce.
 		</p>
 	</div>

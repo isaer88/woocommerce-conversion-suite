@@ -75,7 +75,7 @@ Quick Checkout is designed for the classic WooCommerce checkout form.
 
 = 0.1.2 =
 
-* Renamed the plugin to Veltrixa Toolkit for WooCommerce.
+* Renamed the plugin and main PHP file to Veltrixa Toolkit for WooCommerce.
 * Updated plugin metadata and WooCommerce dependency declaration.
 
 = 0.1.1 =

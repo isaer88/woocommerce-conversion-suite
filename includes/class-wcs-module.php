@@ -2,7 +2,7 @@
 /**
  * Base class for Conversion Suite modules.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;

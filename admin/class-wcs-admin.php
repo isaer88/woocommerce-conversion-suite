@@ -2,7 +2,7 @@
 /**
  * WooCommerce Conversion Suite admin.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,8 +13,8 @@ class VELTRIXA_Admin {
 
     public function register_menu() {
         add_menu_page(
-            'WooCommerce Conversion Suite',
-            'Conversion Suite',
+            'Veltrixa Toolkit for WooCommerce',
+            'Veltrixa Toolkit',
             'manage_woocommerce',
             self::MENU_SLUG,
             array( $this, 'render_settings_page' ),
