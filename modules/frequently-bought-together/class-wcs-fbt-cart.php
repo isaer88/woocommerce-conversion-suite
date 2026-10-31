@@ -2,7 +2,7 @@
 /**
  * FBT cart operations.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;

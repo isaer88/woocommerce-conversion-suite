@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Yes. Modules can be enabled or disabled independently.
 Quick Checkout is designed for the classic WooCommerce checkout form.
 
 == Changelog ==
+
+= 0.1.3 =
+
+* Updated dashboard branding and release metadata.
 
 = 0.1.2 =
 

@@ -2,7 +2,7 @@
 /**
  * One Click Order idempotency storage.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -3,7 +3,7 @@
  * Plugin Name: Veltrixa Toolkit for WooCommerce
  * Plugin URI: https://github.com/isaer88/woocommerce-conversion-suite
  * Description: A modular WooCommerce toolkit with checkout shortcuts, product enhancements, and conversion-focused features.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: Oleksandr Yeremenko
  * Text Domain: veltrixa-toolkit-for-woocommerce
  * License: GPLv2 or later
@@ -48,7 +48,7 @@ add_action(
     }
 );
 
-define( 'VELTRIXA_VERSION', '0.1.2' );
+define( 'VELTRIXA_VERSION', '0.1.3' );
 define( 'VELTRIXA_PLUGIN_FILE', __FILE__ );
 define( 'VELTRIXA_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'VELTRIXA_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );

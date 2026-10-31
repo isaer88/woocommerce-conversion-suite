@@ -1,8 +1,8 @@
 <?php
 /**
- * Uninstall WooCommerce Conversion Suite.
+ * Uninstall Veltrixa Toolkit for WooCommerce.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

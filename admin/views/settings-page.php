@@ -1,9 +1,9 @@
 
 <?php
 /**
- * Conversion Suite dashboard.
+ * Veltrixa Toolkit dashboard.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -40,7 +40,7 @@ foreach ( $registered as $module ) {
 ?>
 
 <div class="wrap wcs-admin-page">
-    <h1>WooCommerce Conversion Suite</h1>
+    <h1>Veltrixa Toolkit for WooCommerce</h1>
 
     <p>
         Manage conversion tools for your WooCommerce store.

@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Conversion Suite admin.
+ * Veltrixa Toolkit admin.
  *
  * @package Veltrixa_Toolkit
  */
