@@ -255,12 +255,11 @@ final class VELTRIXA_OCO_Idempotency {
             array(
                 'request_hash' => self::hash_request( $request_id ),
                 'status'       => 'processing',
-                'order_id'     => null,
                 'created_at'   => $now,
                 'updated_at'   => $now,
                 'expires_at'   => $expires,
             ),
-            array( '%s', '%s', '%d', '%s', '%s', '%s' )
+            array( '%s', '%s', '%s', '%s', '%s' )
         );
 
         return 1 === $result;
