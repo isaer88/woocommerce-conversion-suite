@@ -281,25 +281,41 @@ final class VELTRIXA_One_Click_Order_Ajax {
         }
 
         if ( ! VELTRIXA_OCO_Idempotency::reserve( $request_id ) ) {
-            // The legacy reservation was created by this request; roll it back.
-            delete_option( $request_key );
+            // Preserve the legacy reservation. A failed insert may
+            // indicate a duplicate or an uncertain database outcome.
+            // Never release this lock automatically.
 
             global $wpdb;
+
             $table = VELTRIXA_OCO_Idempotency::table_name();
+
             $existing = $wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT request_hash FROM %i WHERE request_hash = %s LIMIT 1",
-                $table,
+                    'SELECT request_hash FROM %i WHERE request_hash = %s LIMIT 1',
+                    $table,
                     VELTRIXA_OCO_Idempotency::hash_request( $request_id )
                 )
             );
 
             if ( is_string( $existing ) && '' !== $existing ) {
-                $this->error( 'This order request has already been submitted.', 409 );
+                $this->error(
+                    'This order request has already been submitted.',
+                    409
+                );
             }
-            $this->error( 'Order storage is temporarily unavailable.', 503 );
-        }
 
+            self::log_error(
+                'WCS OCO: Reservation failed or database state is uncertain; ' .
+                'legacy reservation preserved for manual review. Request hash: ' .
+                VELTRIXA_OCO_Idempotency::hash_request( $request_id )
+            );
+
+            $this->error(
+                'Order storage is temporarily unavailable. ' .
+                'Please contact the store before retrying.',
+                503
+            );
+        }
         // Keep the legacy reservation for compatibility with older handlers.
         // It must not be removed until the rolling upgrade is complete.
         $scheduled = wp_schedule_single_event(
