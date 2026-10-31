@@ -85,6 +85,7 @@ final class VELTRIXA_Recently_Viewed {
                 'showCurrent'   => 'yes' === $this->settings['show_current'],
                 'requireConsent'=> 'yes' === $this->settings['require_consent'],
                 'cookieName'    => 'wcs_recently_viewed',
+                'nonce' => wp_create_nonce( 'veltrixa_recently_viewed_products' ),
             )
         );
     }
@@ -114,6 +115,13 @@ final class VELTRIXA_Recently_Viewed {
     }
 
     public function ajax_products() {
+        if ( ! check_ajax_referer( 'veltrixa_recently_viewed_products', 'nonce', false ) ) {
+            wp_send_json_error(
+                array( 'message' => 'Invalid security token.' ),
+                403
+            );
+        }
+
         if ( ! function_exists( 'wc_get_product' ) ) {
             wp_send_json_error( array( 'message' => 'WooCommerce unavailable.' ), 503 );
         }

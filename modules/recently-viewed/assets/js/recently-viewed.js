@@ -105,6 +105,7 @@
 
         const formData = new FormData();
         formData.append('action', 'wcs_recently_viewed_products');
+        formData.append('nonce', config.nonce);
 
         displayIds.forEach(function (id) {
             formData.append('product_ids[]', String(id));
