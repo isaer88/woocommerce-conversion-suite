@@ -89,6 +89,21 @@ final class VELTRIXA_FBT_Product_Fields {
             return;
         }
 
+        if ( ! current_user_can( 'edit_product', $product->get_id() ) ) {
+            return;
+        }
+
+        if (
+            ! isset( $_POST['woocommerce_meta_nonce'] )
+            || ! is_string( $_POST['woocommerce_meta_nonce'] )
+            || ! wp_verify_nonce(
+                sanitize_text_field( wp_unslash( $_POST['woocommerce_meta_nonce'] ) ),
+                'woocommerce_save_data'
+            )
+        ) {
+            return;
+        }
+
         if ( ! $product->is_type( 'simple' ) ) {
             $product->delete_meta_data( self::META_KEY );
             return;
