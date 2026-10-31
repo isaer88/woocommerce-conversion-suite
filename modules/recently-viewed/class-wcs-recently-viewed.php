@@ -147,7 +147,7 @@ final class VELTRIXA_Recently_Viewed {
         }
 
         $ids = array_slice(
-            array_values( array_unique( array_filter( array_map( 'absint', $raw ) ) ) ),
+            array_values( array_unique( array_filter( array_map( 'absint', array_map( 'sanitize_text_field', $raw ) ) ) ) ),
             0,
             20
         );

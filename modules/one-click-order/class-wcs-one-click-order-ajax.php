@@ -119,7 +119,7 @@ final class VELTRIXA_One_Click_Order_Ajax {
             wp_unslash( $_POST['product_id'] )
         );
 
-        $quantity_raw = wp_unslash( $_POST['quantity'] );
+        $quantity_raw = sanitize_text_field( wp_unslash( $_POST['quantity'] ) );
 
         if (
             ! preg_match( '/^[1-9][0-9]*$/', $quantity_raw )

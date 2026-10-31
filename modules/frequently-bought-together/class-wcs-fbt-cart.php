@@ -95,7 +95,7 @@ final class VELTRIXA_FBT_Cart {
 
         $selected = array_values(
             array_unique(
-                array_filter( array_map( 'absint', $raw ) )
+                array_filter( array_map( 'absint', array_map( 'sanitize_text_field', $raw ) ) )
             )
         );
 

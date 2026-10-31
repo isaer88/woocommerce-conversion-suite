@@ -122,7 +122,7 @@ final class VELTRIXA_FBT_Product_Fields {
                 continue;
             }
 
-            $id = absint( $id );
+            $id = absint( sanitize_text_field( $id ) );
 
             if (
                 ! $id
