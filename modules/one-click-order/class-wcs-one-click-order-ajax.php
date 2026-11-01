@@ -138,7 +138,10 @@ final class VELTRIXA_One_Click_Order_Ajax {
             wp_unslash( $_POST['customer_name'] )
         );
 
-        if ( mb_strlen( $name, 'UTF-8' ) > 100 ) {
+        if (
+            false === preg_match_all( '/./us', $name, $matches )
+            || count( $matches[0] ) > 100
+        ) {
             $this->error(
                 'Customer name must not exceed 100 characters.',
                 400
