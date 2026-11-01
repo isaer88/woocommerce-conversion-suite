@@ -312,18 +312,6 @@ final class VELTRIXA_OCO_Idempotency {
         );
     }
 
-    public static function release( $request_id ) {
-        global $wpdb;
-
-        return $wpdb->delete(
-            self::table_name(),
-            array(
-                'request_hash' => self::hash_request( $request_id ),
-                'status'       => 'processing',
-            ),
-            array( '%s', '%s' )
-        );
-    }
 
     /**
      * Remove only expired completed records, never uncertain/processing ones.
