@@ -70,3 +70,119 @@
 .wcs-switch input:checked + .wcs-switch__slider::before {
 	transform: translateX(20px);
 }
+
+
+/* Dashboard summary */
+
+.wcs-dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.wcs-summary-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wcs-summary-card strong {
+    font-size: 30px;
+    line-height: 1.2;
+}
+
+.wcs-summary-card span {
+    color: #646970;
+}
+
+.wcs-section-heading {
+    margin-top: 32px;
+}
+
+.wcs-module-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.wcs-module-card p {
+    color: #646970;
+    line-height: 1.6;
+}
+
+.wcs-module-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 18px;
+}
+
+.wcs-module-status,
+.wcs-module-badge {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wcs-module-status.is-active {
+    color: #116329;
+    background: #e7f5e9;
+}
+
+.wcs-module-status.is-inactive,
+.wcs-module-status.is-planned {
+    color: #646970;
+    background: #f0f0f1;
+}
+
+.wcs-module-badge {
+    color: #646970;
+    background: #f0f0f1;
+}
+
+.wcs-module-card--planned {
+    opacity: 0.75;
+}
+
+.wcs-dashboard-notice {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-left: 4px solid;
+    background: #fff;
+}
+
+.wcs-dashboard-notice[hidden] {
+    display: none;
+}
+
+.wcs-dashboard-notice.is-success {
+    border-color: #00a32a;
+}
+
+.wcs-dashboard-notice.is-error {
+    border-color: #d63638;
+}
+
+.wcs-switch input:focus-visible + .wcs-switch__slider {
+    outline: 2px solid #2271b1;
+    outline-offset: 3px;
+}
+
+.wcs-switch input:disabled + .wcs-switch__slider {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+@media (max-width: 782px) {
+    .wcs-dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+}

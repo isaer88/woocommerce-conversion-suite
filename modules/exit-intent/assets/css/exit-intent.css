@@ -1,0 +1,163 @@
+
+.wcs-exit-intent[hidden] {
+    display: none !important;
+}
+
+.wcs-exit-intent {
+    --wcs-ei-background: #ffffff;
+    --wcs-ei-text: #1f2937;
+    --wcs-ei-button: #2563eb;
+    --wcs-ei-button-text: #ffffff;
+
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.wcs-exit-intent *,
+.wcs-exit-intent *::before,
+.wcs-exit-intent *::after {
+    box-sizing: border-box;
+}
+
+.wcs-exit-intent__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.72);
+}
+
+.wcs-exit-intent__dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+    padding: 38px 30px 30px;
+    border-radius: 14px;
+    background: var(--wcs-ei-background);
+    color: var(--wcs-ei-text);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+.wcs-exit-intent__close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--wcs-ei-text);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.wcs-exit-intent__close:hover,
+.wcs-exit-intent__close:focus-visible {
+    background: rgba(100, 116, 139, 0.12);
+}
+
+.wcs-exit-intent__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.wcs-exit-intent__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--wcs-ei-button);
+}
+
+.wcs-exit-intent__content h2 {
+    margin: 0;
+    color: var(--wcs-ei-text);
+    font-size: clamp(23px, 4vw, 30px);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.wcs-exit-intent__content p {
+    margin: 0;
+    color: var(--wcs-ei-text);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.wcs-exit-intent__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--wcs-ei-button);
+    color: var(--wcs-ei-button-text);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.wcs-exit-intent__button:hover,
+.wcs-exit-intent__button:focus-visible {
+    background: var(--wcs-ei-button);
+    color: var(--wcs-ei-button-text);
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.wcs-exit-intent__dismiss {
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: var(--wcs-ei-text);
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+body.wcs-exit-intent-open {
+    overflow: hidden !important;
+}
+
+@media (max-width: 600px) {
+    .wcs-exit-intent {
+        padding: 12px;
+    }
+
+    .wcs-exit-intent__dialog {
+        max-height: calc(100dvh - 24px);
+        padding: 36px 20px 24px;
+        border-radius: 12px;
+    }
+
+    .wcs-exit-intent__content {
+        gap: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wcs-exit-intent__button {
+        transition: none;
+    }
+}

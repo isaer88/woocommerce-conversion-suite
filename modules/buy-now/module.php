@@ -1,0 +1,38 @@
+<?php
+/**
+ * Buy Now module bootstrap.
+ *
+ * @package Veltrixa_Toolkit
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+final class VELTRIXA_Buy_Now_Module extends VELTRIXA_Module {
+
+    protected $id = 'buy-now';
+    protected $name = 'Buy Now';
+    protected $description = 'Direct checkout from product pages.';
+    protected $version = '1.0.1';
+    protected $icon = 'dashicons-cart';
+    protected $settings_page = 'veltrixa-buy-now';
+
+    public function register_admin_hooks() {
+        if ( ! is_admin() ) {
+            return;
+        }
+
+        require_once __DIR__ . '/class-wcs-buy-now-settings.php';
+
+        $settings = new VELTRIXA_Buy_Now_Settings();
+        $settings->register_hooks();
+    }
+
+    public function register_hooks() {
+        require_once __DIR__ . '/class-wcs-buy-now.php';
+
+        $frontend = new VELTRIXA_Buy_Now();
+        $frontend->register_hooks();
+    }
+}
+
+return new VELTRIXA_Buy_Now_Module();

@@ -1,64 +1,83 @@
 <?php
 /**
- * Адміністративна частина.
+ * Veltrixa Toolkit admin.
  *
- * @package WooCommerce_Conversion_Suite
+ * @package Veltrixa_Toolkit
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class WCS_Admin {
+class VELTRIXA_Admin {
 
-	/**
-	 * Додає сторінку плагіна в меню WooCommerce.
-	 *
-	 * @return void
-	 */
-	public function register_menu() {
-		add_submenu_page(
-			'woocommerce',
-			'Conversion Suite',
-			'Conversion Suite',
-			'manage_woocommerce',
-			'woocommerce-conversion-suite',
-			array( $this, 'render_settings_page' )
-		);
-	}
+    const MENU_SLUG = 'conversion-suite-for-woocommerce';
 
-	/**
-	 * Виводить сторінку налаштувань.
-	 *
-	 * @return void
-	 */
-	public function render_settings_page() {
-		require WCS_PLUGIN_PATH . 'admin/views/settings-page.php';
-	}
+    public function register_menu() {
+        add_menu_page(
+            'Veltrixa Toolkit for WooCommerce',
+            'Veltrixa Toolkit',
+            'manage_woocommerce',
+            self::MENU_SLUG,
+            array( $this, 'render_settings_page' ),
+            'dashicons-cart',
+            56
+        );
 
-	/**
-	 * Підключає стилі та скрипти адмін-панелі.
-	 *
-	 * @param string $hook_suffix Поточна сторінка.
-	 *
-	 * @return void
-	 */
-	public function enqueue_assets( $hook_suffix ) {
-		if ( 'woocommerce_page_woocommerce-conversion-suite' !== $hook_suffix ) {
-			return;
-		}
+        add_submenu_page(
+            self::MENU_SLUG,
+            'Dashboard',
+            'Dashboard',
+            'manage_woocommerce',
+            self::MENU_SLUG,
+            array( $this, 'render_settings_page' )
+        );
+    }
 
-		wp_enqueue_style(
-			'wcs-admin',
-			WCS_PLUGIN_URL . 'admin/css/admin.css',
-			array(),
-			WCS_VERSION
-		);
+    public function render_settings_page() {
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_die(
+                esc_html__(
+                    'Permission denied.',
+                    'veltrixa-toolkit-for-woocommerce'
+                )
+            );
+        }
 
-		wp_enqueue_script(
-			'wcs-admin',
-			WCS_PLUGIN_URL . 'admin/js/admin.js',
-			array(),
-			WCS_VERSION,
-			true
-		);
-	}
+        require VELTRIXA_PLUGIN_PATH . 'admin/views/settings-page.php';
+    }
+
+    public function enqueue_assets( $hook_suffix ) {
+        if (
+            'toplevel_page_' . self::MENU_SLUG
+            !== $hook_suffix
+        ) {
+            return;
+        }
+
+        wp_enqueue_style(
+            'wcs-admin',
+            VELTRIXA_PLUGIN_URL . 'admin/css/admin.css',
+            array(),
+            VELTRIXA_VERSION
+        );
+
+        wp_enqueue_script(
+            'wcs-admin',
+            VELTRIXA_PLUGIN_URL . 'admin/js/admin.js',
+            array(),
+            VELTRIXA_VERSION,
+            true
+        );
+
+        wp_localize_script(
+            'wcs-admin',
+            'veltrixaAdmin',
+            array(
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'nonce'   => wp_create_nonce( 'veltrixa_toggle_module' ),
+                'saving'  => 'Saving...',
+                'saved'   => 'Module settings saved.',
+                'error'   => 'Unable to save. Please try again.',
+            )
+        );
+    }
 }

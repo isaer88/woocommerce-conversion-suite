@@ -1,0 +1,82 @@
+
+.wcs-sale-countdown[hidden] {
+    display: none !important;
+}
+
+.wcs-sale-countdown {
+    --wcs-sc-bg: #f8f9fa;
+    --wcs-sc-text: #222222;
+    --wcs-sc-accent: #2271b1;
+
+    clear: both;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 18px 0 24px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: var(--wcs-sc-bg);
+    color: var(--wcs-sc-text);
+}
+
+.wcs-sale-countdown__title {
+    margin-bottom: 16px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.wcs-sale-countdown__timer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.wcs-sale-countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 12px 5px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    text-align: center;
+}
+
+.wcs-sale-countdown__unit strong {
+    color: var(--wcs-sc-accent);
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.wcs-sale-countdown__unit span {
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+    .wcs-sale-countdown {
+        padding: 12px;
+    }
+
+    .wcs-sale-countdown__timer {
+        gap: 6px;
+    }
+
+    .wcs-sale-countdown__unit {
+        padding: 10px 3px;
+    }
+
+    .wcs-sale-countdown__unit strong {
+        font-size: 19px;
+    }
+
+    .wcs-sale-countdown__unit span {
+        font-size: 10px;
+    }
+}
