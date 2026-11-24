@@ -39,7 +39,7 @@ final class VELTRIXA_Free_Shipping_Progress_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Free Shipping Progress Settings',
             'Free Shipping Progress',
             'manage_woocommerce',
@@ -49,6 +49,10 @@ final class VELTRIXA_Free_Shipping_Progress_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_free_shipping_progress_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_free_shipping_progress_group',
             self::OPTION_NAME,

@@ -39,7 +39,7 @@ final class VELTRIXA_Quick_Checkout_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Quick Checkout Settings',
             'Quick Checkout',
             'manage_woocommerce',
@@ -49,6 +49,10 @@ final class VELTRIXA_Quick_Checkout_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_quick_checkout_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_quick_checkout_group',
             self::OPTION_NAME,

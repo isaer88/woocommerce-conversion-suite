@@ -9,7 +9,8 @@ $veltrixa_sticky_settings = VELTRIXA_Sticky_Add_To_Cart_Settings::get_settings()
 $veltrixa_sticky_option   = VELTRIXA_Sticky_Add_To_Cart_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Sticky Add to Cart Settings</h1>
 
     <p>Configure the floating purchase bar on WooCommerce product pages.</p>

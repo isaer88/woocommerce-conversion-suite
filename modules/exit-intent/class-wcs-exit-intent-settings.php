@@ -53,7 +53,7 @@ final class VELTRIXA_Exit_Intent_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Exit Intent Settings',
             'Exit Intent',
             'manage_woocommerce',
@@ -63,6 +63,10 @@ final class VELTRIXA_Exit_Intent_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_exit_intent_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_exit_intent_group',
             self::OPTION_NAME,

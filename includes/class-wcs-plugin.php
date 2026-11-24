@@ -49,7 +49,6 @@ final class VELTRIXA_Plugin {
         $this->module_manager = new VELTRIXA_Module_Manager();
 
         $admin  = new VELTRIXA_Admin();
-        $public = new VELTRIXA_Public();
 
         add_action(
             'admin_menu',
@@ -61,10 +60,6 @@ final class VELTRIXA_Plugin {
             array( $admin, 'enqueue_assets' )
         );
 
-        add_action(
-            'wp_enqueue_scripts',
-            array( $public, 'enqueue_assets' )
-        );
     }
 
     /**

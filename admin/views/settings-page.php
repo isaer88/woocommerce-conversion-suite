@@ -40,11 +40,11 @@ foreach ( $veltrixa_dashboard_registered as $veltrixa_dashboard_module ) {
 ?>
 
 <div class="wrap wcs-admin-page">
-    <h1>Veltrixa Toolkit for WooCommerce</h1>
+    <div class="wcs-hero"><h1>Veltrixa Toolkit for WooCommerce</h1>
 
     <p>
         Manage conversion tools for your WooCommerce store.
-    </p>
+    </p></div>
 
     <div class="wcs-dashboard-summary">
         <div class="wcs-summary-card">
@@ -58,14 +58,21 @@ foreach ( $veltrixa_dashboard_registered as $veltrixa_dashboard_module ) {
         </div>
 
         <div class="wcs-summary-card">
-            <strong><?php echo esc_html( count( $veltrixa_dashboard_planned ) ); ?></strong>
-            <span>Coming soon</span>
+            <strong id="wcs-inactive-count"><?php echo esc_html( count( $veltrixa_dashboard_registered ) - $veltrixa_dashboard_active_count ); ?></strong>
+            <span>Inactive modules</span>
         </div>
     </div>
 
     <div id="wcs-dashboard-notice" class="wcs-dashboard-notice" role="status" aria-live="polite" hidden></div>
 
     <h2>Available Modules</h2>
+    <div class="wcs-toolbar" hidden>
+        <label for="wcs-search"><?php esc_html_e( 'Search modules', 'veltrixa-toolkit-for-woocommerce' ); ?></label>
+        <input type="search" id="wcs-search" />
+        <label for="wcs-filter"><?php esc_html_e( 'Status', 'veltrixa-toolkit-for-woocommerce' ); ?></label>
+        <select id="wcs-filter"><option value="all"><?php esc_html_e( 'All', 'veltrixa-toolkit-for-woocommerce' ); ?></option><option value="active"><?php esc_html_e( 'Active', 'veltrixa-toolkit-for-woocommerce' ); ?></option><option value="inactive"><?php esc_html_e( 'Inactive', 'veltrixa-toolkit-for-woocommerce' ); ?></option></select>
+    </div>
+    <p id="wcs-no-results" role="status" hidden><?php esc_html_e( 'No matching modules.', 'veltrixa-toolkit-for-woocommerce' ); ?></p>
 
     <div class="wcs-modules-grid">
         <?php foreach ( $veltrixa_dashboard_registered as $veltrixa_dashboard_module ) : ?>
@@ -116,6 +123,7 @@ foreach ( $veltrixa_dashboard_registered as $veltrixa_dashboard_module ) {
         <p>No installed modules found.</p>
     <?php endif; ?>
 
+    <?php if ( ! empty( $veltrixa_dashboard_planned ) ) : ?>
     <h2 class="wcs-section-heading">Coming Soon</h2>
 
     <div class="wcs-modules-grid">
@@ -136,4 +144,5 @@ foreach ( $veltrixa_dashboard_registered as $veltrixa_dashboard_module ) {
             </div>
         <?php endforeach; ?>
     </div>
+    <?php endif; ?>
 </div>

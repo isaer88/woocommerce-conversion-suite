@@ -186,3 +186,23 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Shared admin UX */
+.wcs-hero { background: #31205e; color: #fff; padding: 24px; border-radius: 12px; margin-top: 16px; }
+.wcs-hero h1, .wcs-hero p { color: #fff; }
+.wcs-hero p { margin-bottom: 0; }
+.wcs-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0; }
+.wcs-toolbar[hidden], .wcs-module-card[hidden], #wcs-no-results[hidden] { display: none; }
+.wcs-toolbar input { min-width: 0; width: 260px; max-width: 100%; }
+.wcs-modules-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.wcs-module-card { border-radius: 12px; }
+.wcs-switch { flex-shrink: 0; }
+.wcs-switch input:checked + .wcs-switch__slider { background: #6246b5; }
+.wcs-module-settings { max-width: 1100px; }
+.wcs-module-settings h1 { margin-bottom: 12px; }
+.wcs-module-settings .form-table { background: #fff; border: 1px solid #dcdcde; border-radius: 8px; }
+.wcs-module-settings .form-table th { padding-left: 20px; }
+.wcs-module-settings .form-table td { padding-right: 20px; }
+.wcs-module-settings input.regular-text, .wcs-module-settings textarea { max-width: 100%; }
+.wcs-back { margin-top: 20px; }
+@media (max-width: 782px) { .wcs-module-settings .form-table th, .wcs-module-settings .form-table td { padding: 12px; box-sizing: border-box; } }
