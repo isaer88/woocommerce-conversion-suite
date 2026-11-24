@@ -9,7 +9,8 @@ $veltrixa_fsp_settings = VELTRIXA_Free_Shipping_Progress_Settings::get_settings(
 $veltrixa_fsp_option   = VELTRIXA_Free_Shipping_Progress_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Free Shipping Progress Settings</h1>
 
     <p>Display cart progress toward a configured free shipping threshold.</p>

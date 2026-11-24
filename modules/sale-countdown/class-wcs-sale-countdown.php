@@ -34,13 +34,6 @@ final class VELTRIXA_Sale_Countdown {
     }
 
     public function enqueue_assets() {
-        wp_localize_script(
-            'wcs-sale-countdown',
-            'veltrixaSaleCountdown',
-            array(
-                'serverTime' => time(),
-            )
-        );
         if ( ! is_product() ) {
             return;
         }
@@ -65,6 +58,14 @@ final class VELTRIXA_Sale_Countdown {
                 ? filemtime( $path . 'js/sale-countdown.js' )
                 : '1.0.0',
             true
+        );
+
+        wp_localize_script(
+            'wcs-sale-countdown',
+            'veltrixaSaleCountdown',
+            array(
+                'serverTime' => time(),
+            )
         );
 
         $background = sanitize_hex_color( $this->settings['background'] );

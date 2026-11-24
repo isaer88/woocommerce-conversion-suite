@@ -44,7 +44,7 @@ final class VELTRIXA_Buy_Now_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Buy Now Settings',
             'Buy Now',
             'manage_woocommerce',
@@ -54,6 +54,10 @@ final class VELTRIXA_Buy_Now_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_buy_now_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_buy_now_group',
             self::OPTION_NAME,

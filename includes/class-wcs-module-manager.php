@@ -113,6 +113,13 @@ final class VELTRIXA_Module_Manager {
     }
 
     public function ajax_toggle_module() {
+        if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+            wp_send_json_error( array( 'message' => 'Method not allowed.' ), 405 );
+        }
+        if ( ! isset( $_POST['nonce'] ) || ! is_string( $_POST['nonce'] ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid security token.' ), 403 );
+        }
+
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
             wp_send_json_error(
                 array( 'message' => 'Permission denied.' ),
@@ -133,11 +140,11 @@ final class VELTRIXA_Module_Manager {
             );
         }
 
-        $id = isset( $_POST['module_id'] )
+        $id = isset( $_POST['module_id'] ) && is_string( $_POST['module_id'] )
             ? sanitize_key( wp_unslash( $_POST['module_id'] ) )
             : '';
 
-        $enabled = isset( $_POST['enabled'] )
+        $enabled = isset( $_POST['enabled'] ) && is_string( $_POST['enabled'] )
             ? sanitize_text_field( wp_unslash( $_POST['enabled'] ) )
             : '';
 

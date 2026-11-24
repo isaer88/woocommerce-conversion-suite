@@ -11,7 +11,8 @@ $veltrixa_sc_settings = VELTRIXA_Sale_Countdown_Settings::get_settings();
 $veltrixa_sc_option   = VELTRIXA_Sale_Countdown_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Sale Countdown Settings</h1>
 
     <p>

@@ -3,7 +3,7 @@
  * Plugin Name: Veltrixa Toolkit for WooCommerce
  * Plugin URI: https://github.com/isaer88/woocommerce-conversion-suite
  * Description: A modular WooCommerce toolkit with checkout shortcuts, product enhancements, and conversion-focused features.
- * Version: 0.1.5
+ * Version: 0.2.0
  * Author: Oleksandr Yeremenko
  * Text Domain: veltrixa-toolkit-for-woocommerce
  * License: GPLv2 or later
@@ -48,7 +48,7 @@ add_action(
     }
 );
 
-define( 'VELTRIXA_VERSION', '0.1.5' );
+define( 'VELTRIXA_VERSION', '0.2.0' );
 define( 'VELTRIXA_PLUGIN_FILE', __FILE__ );
 define( 'VELTRIXA_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'VELTRIXA_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -123,6 +123,9 @@ register_deactivation_hook(
  * Upgrade storage on sites where the plugin is already active.
  */
 function veltrixa_maybe_upgrade_oco_storage() {
+    if ( ! current_user_can( 'manage_woocommerce' ) || ! veltrixa_is_woocommerce_active() ) {
+        return;
+    }
     // Preserve the existing idempotency table after upgrading from older releases.
     if ( false === get_option( 'veltrixa_oco_table_version', false ) ) {
         $legacy_version = get_option( 'wcs_oco_table_version', false );
@@ -173,11 +176,12 @@ function veltrixa_woocommerce_missing_notice() {
 function veltrixa_run_plugin() {
   require_once VELTRIXA_PLUGIN_PATH . 'includes/class-veltrixa-settings-migration.php';
 
-  veltrixa_migrate_legacy_settings();
 	if ( ! veltrixa_is_woocommerce_active() ) {
 		add_action( 'admin_notices', 'veltrixa_woocommerce_missing_notice' );
 		return;
 	}
+
+    veltrixa_migrate_legacy_settings();
 
 	require_once VELTRIXA_PLUGIN_PATH . 'includes/class-wcs-plugin.php';
 

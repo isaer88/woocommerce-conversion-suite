@@ -34,7 +34,8 @@ $veltrixa_qc_fields = array(
 );
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Quick Checkout Settings</h1>
 
     <p>Configure the classic WooCommerce checkout form.</p>

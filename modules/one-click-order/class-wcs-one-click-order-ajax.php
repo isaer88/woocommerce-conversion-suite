@@ -69,6 +69,13 @@ final class VELTRIXA_One_Click_Order_Ajax {
     }
 
     public function create_order() {
+        if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+            wp_send_json_error( array( 'message' => 'Method not allowed.' ), 405 );
+        }
+        if ( ! isset( $_POST['nonce'] ) || ! is_string( $_POST['nonce'] ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid security token.' ), 403 );
+        }
+
         if (
             ! check_ajax_referer(
                 'veltrixa_oco_create_order',

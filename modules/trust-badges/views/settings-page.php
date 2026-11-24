@@ -13,7 +13,8 @@ $veltrixa_tb_icons    = VELTRIXA_Trust_Badges_Settings::icons();
 $veltrixa_tb_defaults = VELTRIXA_Trust_Badges_Settings::default_badges();
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Trust Badges Settings</h1>
 
     <p>

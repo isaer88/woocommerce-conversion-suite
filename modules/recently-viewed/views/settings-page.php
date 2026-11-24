@@ -11,7 +11,8 @@ $veltrixa_rv_settings = VELTRIXA_Recently_Viewed_Settings::get_settings();
 $veltrixa_rv_option   = VELTRIXA_Recently_Viewed_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Recently Viewed Settings</h1>
 
     <p>Configure how recently viewed products appear in your store.</p>

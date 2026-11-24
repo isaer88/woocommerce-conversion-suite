@@ -47,7 +47,7 @@ final class VELTRIXA_Low_Stock_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Low Stock Settings',
             'Low Stock',
             'manage_woocommerce',
@@ -57,6 +57,10 @@ final class VELTRIXA_Low_Stock_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_low_stock_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_low_stock_group',
             self::OPTION_NAME,

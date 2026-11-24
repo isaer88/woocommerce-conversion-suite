@@ -46,10 +46,24 @@ class VELTRIXA_Admin {
     }
 
     public function enqueue_assets( $hook_suffix ) {
-        if (
-            'toplevel_page_' . self::MENU_SLUG
-            !== $hook_suffix
-        ) {
+        $dashboard = 'toplevel_page_' . self::MENU_SLUG === $hook_suffix;
+        $module_page = false;
+        $manager = VELTRIXA_Plugin::instance()->get_module_manager();
+        if ( $manager ) {
+            foreach ( $manager->get_modules() as $module ) {
+                $url = $module->get_settings_url();
+                $query = wp_parse_url( $url, PHP_URL_QUERY );
+                if ( ! is_string( $query ) ) {
+                    continue;
+                }
+                parse_str( $query, $args );
+                if ( isset( $args['page'] ) && is_string( $args['page'] ) && get_plugin_page_hookname( $args['page'], self::MENU_SLUG ) === $hook_suffix ) {
+                    $module_page = true;
+                    break;
+                }
+            }
+        }
+        if ( ! $dashboard && ! $module_page ) {
             return;
         }
 
@@ -59,6 +73,10 @@ class VELTRIXA_Admin {
             array(),
             VELTRIXA_VERSION
         );
+
+        if ( ! $dashboard ) {
+            return;
+        }
 
         wp_enqueue_script(
             'wcs-admin',

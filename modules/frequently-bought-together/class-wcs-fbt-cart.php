@@ -22,6 +22,13 @@ final class VELTRIXA_FBT_Cart {
     }
 
     public function add_bundle() {
+        if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+            wp_send_json_error( array( 'message' => 'Method not allowed.' ), 405 );
+        }
+        if ( ! isset( $_POST['nonce'] ) || ! is_string( $_POST['nonce'] ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid security token.' ), 403 );
+        }
+
         if ( ! check_ajax_referer( 'veltrixa_fbt_add', 'nonce', false ) ) {
             wp_send_json_error(
                 array( 'message' => 'Security check failed.' ),
@@ -73,16 +80,11 @@ final class VELTRIXA_FBT_Cart {
         $saved = VELTRIXA_FBT_Meta::get_products( $main );
         $saved = is_array( $saved ) ? array_map( 'absint', $saved ) : array();
 
-        $raw = isset( $_POST['related_ids'] )
-            ? map_deep( wp_unslash( ( isset( $_POST['related_ids'] ) && is_array( $_POST['related_ids'] ) ) ? $_POST['related_ids'] : array() ), 'sanitize_text_field' )
-            : array();
-
-        if ( ! is_array( $raw ) ) {
-            wp_send_json_error(
-                array( 'message' => 'Invalid selection.' ),
-                400
-            );
+        if ( isset( $_POST['related_ids'] ) && ( ! is_array( $_POST['related_ids'] ) || count( $_POST['related_ids'] ) > 3 ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid product selection.' ), 400 );
         }
+
+        $raw = isset( $_POST['related_ids'] ) ? wp_unslash( $_POST['related_ids'] ) : array();
 
         foreach ( $raw as $raw_id ) {
             if ( ! is_scalar( $raw_id ) ) {

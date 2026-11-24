@@ -37,7 +37,7 @@ final class VELTRIXA_FBT_Settings {
 
     public function register_page() {
         add_submenu_page(
-            'woocommerce-conversion-suite',
+            VELTRIXA_Admin::MENU_SLUG,
             'Frequently Bought Together Settings',
             'Frequently Bought Together',
             'manage_woocommerce',
@@ -47,6 +47,10 @@ final class VELTRIXA_FBT_Settings {
     }
 
     public function register_settings() {
+        add_filter( 'option_page_capability_veltrixa_fbt_group', static function () {
+            return 'manage_woocommerce';
+        } );
+
         register_setting(
             'veltrixa_fbt_group',
             self::OPTION_NAME,

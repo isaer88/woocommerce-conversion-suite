@@ -10,7 +10,8 @@ $veltrixa_bn_settings = VELTRIXA_Buy_Now_Settings::get_settings();
 $veltrixa_bn_option   = VELTRIXA_Buy_Now_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Buy Now Settings</h1>
 
     <p>Configure the Buy Now button for WooCommerce products.</p>

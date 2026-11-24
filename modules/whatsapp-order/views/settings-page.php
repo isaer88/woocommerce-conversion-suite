@@ -11,7 +11,8 @@ $veltrixa_wa_settings = VELTRIXA_WhatsApp_Order_Settings::get_settings();
 $veltrixa_wa_option   = VELTRIXA_WhatsApp_Order_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>WhatsApp Order Settings</h1>
 
     <p>

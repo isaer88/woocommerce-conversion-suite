@@ -115,6 +115,13 @@ final class VELTRIXA_Recently_Viewed {
     }
 
     public function ajax_products() {
+        if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+            wp_send_json_error( array( 'message' => 'Method not allowed.' ), 405 );
+        }
+        if ( ! isset( $_POST['nonce'] ) || ! is_string( $_POST['nonce'] ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid security token.' ), 403 );
+        }
+
         if ( ! check_ajax_referer( 'veltrixa_recently_viewed_products', 'nonce', false ) ) {
             wp_send_json_error(
                 array( 'message' => 'Invalid security token.' ),
@@ -126,16 +133,11 @@ final class VELTRIXA_Recently_Viewed {
             wp_send_json_error( array( 'message' => 'WooCommerce unavailable.' ), 503 );
         }
 
-        $raw = isset( $_POST['product_ids'] )
-            ? map_deep( wp_unslash( ( isset( $_POST['product_ids'] ) && is_array( $_POST['product_ids'] ) ) ? $_POST['product_ids'] : array() ), 'sanitize_text_field' )
-            : array();
-
-        if ( ! is_array( $raw ) || count( $raw ) > 20 ) {
-            wp_send_json_error(
-                array( 'message' => 'Invalid product IDs. Maximum 20 products allowed.' ),
-                400
-            );
+        if ( isset( $_POST['product_ids'] ) && ( ! is_array( $_POST['product_ids'] ) || count( $_POST['product_ids'] ) > 20 ) ) {
+            wp_send_json_error( array( 'message' => 'Invalid product selection.' ), 400 );
         }
+
+        $raw = isset( $_POST['product_ids'] ) ? wp_unslash( $_POST['product_ids'] ) : array();
 
         foreach ( $raw as $raw_id ) {
             if ( ! is_scalar( $raw_id ) ) {
@@ -151,6 +153,11 @@ final class VELTRIXA_Recently_Viewed {
             0,
             20
         );
+
+        // Prime bounded product caches without changing history order or visibility checks.
+        if ( $ids && function_exists( '_prime_post_caches' ) ) {
+            _prime_post_caches( $ids, true, true );
+        }
 
         $limit = absint( $this->settings['limit'] );
         $items = array();
@@ -172,10 +179,10 @@ final class VELTRIXA_Recently_Viewed {
 
             $items[] = array(
                 'id'    => $product->get_id(),
-                'url'   => get_permalink( $product->get_id() ),
+                'url'   => esc_url_raw( get_permalink( $product->get_id() ) ),
                 'name'  => $product->get_name(),
-                'image' => $product->get_image( 'woocommerce_thumbnail' ),
-                'price' => $product->get_price_html(),
+                'image' => wp_kses_post( $product->get_image( 'woocommerce_thumbnail' ) ),
+                'price' => wp_kses_post( $product->get_price_html() ),
             );
         }
 

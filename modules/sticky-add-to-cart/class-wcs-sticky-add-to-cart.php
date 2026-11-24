@@ -113,10 +113,9 @@ final class VELTRIXA_Sticky_Add_To_Cart {
             return;
         }
 
-        $image = $product->get_image(
-            'woocommerce_thumbnail',
-            array( 'class' => 'wcs-sticky-image' )
-        );
+        $image = 'yes' === $settings['show_image']
+            ? $product->get_image( 'woocommerce_thumbnail', array( 'class' => 'wcs-sticky-image' ) )
+            : '';
 
         ?>
         <div

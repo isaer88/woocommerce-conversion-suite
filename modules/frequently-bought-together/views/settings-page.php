@@ -11,7 +11,8 @@ $veltrixa_fbt_settings = VELTRIXA_FBT_Settings::get_settings();
 $veltrixa_fbt_option   = VELTRIXA_FBT_Settings::OPTION_NAME;
 ?>
 
-<div class="wrap">
+<div class="wrap wcs-module-settings">
+    <p class="wcs-back"><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . VELTRIXA_Admin::MENU_SLUG ) ); ?>">&larr; <?php esc_html_e( 'Back to Dashboard', 'veltrixa-toolkit-for-woocommerce' ); ?></a></p>
     <h1>Frequently Bought Together Settings</h1>
 
     <p>Configure complementary product recommendations.</p>

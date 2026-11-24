@@ -109,6 +109,9 @@ final class VELTRIXA_FBT {
             $ids = array();
         }
 
+        // Avoid repeated product lookups for duplicate metadata entries.
+        $ids = array_values( array_unique( array_filter( array_map( 'absint', array_filter( $ids, 'is_scalar' ) ) ) ) );
+
         $related = array();
         $limit = max( 1, min( 3, absint( $this->settings['max_products'] ) ) );
 

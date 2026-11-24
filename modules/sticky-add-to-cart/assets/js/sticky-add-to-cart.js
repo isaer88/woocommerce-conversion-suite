@@ -190,15 +190,27 @@
             });
         }
 
+        let visibilityPending = false;
+        const scheduleVisibility = function () {
+            if (visibilityPending) {
+                return;
+            }
+            visibilityPending = true;
+            window.requestAnimationFrame(function () {
+                visibilityPending = false;
+                updateVisibility();
+            });
+        };
+
         window.addEventListener(
             'scroll',
-            updateVisibility,
+            scheduleVisibility,
             { passive: true }
         );
 
         window.addEventListener(
             'resize',
-            updateVisibility,
+            scheduleVisibility,
             { passive: true }
         );
 

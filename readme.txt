@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.1.5
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ A modular toolkit for WooCommerce stores with product-page enhancements, checkou
 
 Veltrixa Toolkit for WooCommerce provides a collection of optional modules designed to enhance the shopping experience in WooCommerce stores.
 
-Store administrators can enable or disable individual modules from the plugin dashboard.
+Store administrators can enable or disable individual modules from the plugin dashboard, search and filter modules by status, and open individual settings pages from the Veltrixa Toolkit menu.
 
 Available modules:
 
@@ -71,7 +71,22 @@ Yes. Modules can be enabled or disabled independently.
 
 Quick Checkout is designed for the classic WooCommerce checkout form.
 
+== Screenshots ==
+
+1. Module Management Dashboard - Enable, disable, and configure 12 WooCommerce conversion modules.
+2. WhatsApp Order Settings - Configure the WhatsApp number, message template, button colors, and display options.
+
 == Changelog ==
+
+= 0.2.0 =
+
+* Added individual admin menu entries for all 12 modules.
+* Improved dashboard layout, search, status filters and module counters.
+* Unified module settings page styling and navigation.
+* Hardened AJAX request validation and aligned settings permissions for shop managers.
+* Improved frontend asset loading, sticky cart event handling and product lookup efficiency.
+* Improved handling of WooCommerce dependency during order storage upgrades.
+
 
 = 0.1.5 =
 
