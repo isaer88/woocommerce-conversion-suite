@@ -36,6 +36,8 @@ final class VELTRIXA_Plugin {
         $this->initialize_core();
         $this->register_modules();
         $this->initialize_modules();
+        require_once VELTRIXA_PLUGIN_PATH . 'includes/class-veltrixa-extension-api.php';
+        VELTRIXA_Extension_API::initialize();
     }
 
     private function load_dependencies() {
