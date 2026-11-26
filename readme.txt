@@ -78,6 +78,13 @@ Quick Checkout is designed for the classic WooCommerce checkout form.
 
 == Changelog ==
 
+= 0.2.1-RC1 =
+
+* Added the public Extension API 1.0.0 for compatible extensions.
+* Exposed readiness, menu slug and capability through a stable extension contract.
+* Preserved all 12 existing modules and settings.
+* Release candidate for integration testing; public stable tag remains 0.2.0.
+
 = 0.2.0 =
 
 * Added individual admin menu entries for all 12 modules.
