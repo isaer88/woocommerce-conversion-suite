@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,12 +78,11 @@ Quick Checkout is designed for the classic WooCommerce checkout form.
 
 == Changelog ==
 
-= 0.2.1-RC1 =
+= 0.2.1 =
 
 * Added the public Extension API 1.0.0 for compatible extensions.
 * Exposed readiness, menu slug and capability through a stable extension contract.
 * Preserved all 12 existing modules and settings.
-* Release candidate for integration testing; public stable tag remains 0.2.0.
 
 = 0.2.0 =
 
